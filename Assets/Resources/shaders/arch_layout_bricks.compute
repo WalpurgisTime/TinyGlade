@@ -1,0 +1,144 @@
+﻿#pragma kernel CSMain
+
+// ⚡ Déclarations globales
+
+RWTexture2D<float4> path_mask;
+float2 path_mask_ws_dims;
+
+
+
+// Structures utilisées
+struct DrawCommand
+{
+    uint count;
+    uint instanceCount;
+    uint firstIndex;
+    uint baseVertex;
+    uint baseInstance;
+};
+
+struct ArchSegmentData
+{
+    float2 start;
+    float2 end;
+};
+
+RWStructuredBuffer<DrawCommand> cmds;
+RWStructuredBuffer<float4x4> transforms;
+RWStructuredBuffer<ArchSegmentData> segs;
+// Fonction utilitaire pour récupérer la valeur d'un pixel dans path_mask
+int2 WsPosToPixelCoord(float3 ws_pos, int2 img_dims)
+{
+    float2 texture_uv = ws_pos.xz / path_mask_ws_dims + 0.5;
+    return int2(texture_uv.x * img_dims.x, texture_uv.y * img_dims.y);
+}
+
+float PositionWsToRoadMaskValue(float3 position, int2 dims)
+{
+    int2 pixel_coord = WsPosToPixelCoord(position, dims);
+    return path_mask[pixel_coord].x;
+}
+
+// Fonction d’élévation de l'arc
+float ArchFunction(float h)
+{
+    return 1.0 - exp(-5.0 * h);
+}
+
+// Transformation d'une courbe vers l'espace de l'arche
+float3 CurveWsToArchWs(float3 curve_ws, int2 dims)
+{
+    curve_ws.y = PositionWsToRoadMaskValue(curve_ws, dims);
+    curve_ws.y = ArchFunction(curve_ws.y);
+    return curve_ws;
+}
+
+// Calcul de la longueur d'une arche en subdivisant
+float LengthArch(float3 from, float3 to, int2 dims)
+{
+    const uint SUBDIV = 30;
+    float out_length = 0.0;
+
+    for (int i = 0; i < SUBDIV; i++)
+    {
+        float3 subdiv_p1 = lerp(from, to, float(i) / float(SUBDIV));
+        float3 subdiv_p2 = lerp(from, to, float(i + 1) / float(SUBDIV));
+
+        subdiv_p1 = CurveWsToArchWs(subdiv_p1, dims);
+        subdiv_p2 = CurveWsToArchWs(subdiv_p2, dims);
+
+        out_length += distance(subdiv_p1, subdiv_p2);
+    }
+
+    return out_length;
+}
+
+// -------------------------------------------
+// Fonction principale du Compute Shader
+
+[numthreads(1, 1, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    uint idx = id.x;
+    
+    int2 dims;
+    path_mask.GetDimensions(dims.x, dims.y);
+
+    float3 seg_start = float3(segs[idx].start.x, 0.0, segs[idx].start.y);
+    float3 seg_end = float3(segs[idx].end.x, 0.0, segs[idx].end.y);
+
+    float h1 = PositionWsToRoadMaskValue(seg_start, dims);
+    float h2 = PositionWsToRoadMaskValue(seg_end, dims);
+
+    if (h1 < 0.0001 || h2 < 0.0001)
+    {
+        return;
+    }
+
+    float seg_arch_length = LengthArch(seg_start, seg_end, dims);
+    int total_segment_bricks = max(int(floor(seg_arch_length / 0.2)), 1);
+
+    uint instance_offset;
+    InterlockedAdd(cmds[0].instanceCount, 1, instance_offset);
+
+    for (int k = 0; k < total_segment_bricks; k++)
+    {
+        float u1 = float(k) / float(total_segment_bricks);
+        float u2 = float(k + 1) / float(total_segment_bricks);
+
+        float3 subseg_p1 = lerp(seg_start, seg_end, u1);
+        float3 subseg_p2 = lerp(seg_start, seg_end, u2);
+
+        float3 pivot = (subseg_p1 + subseg_p2) / 2.0;
+        float width = distance(subseg_p1, subseg_p2);
+        float3 s = float3(width, 0.15, 0.25);
+
+        float3 x = normalize(subseg_p2 - subseg_p1);
+        float3 z = normalize(cross(x, float3(0.0, 1.0, 0.0)));
+        float3 y = normalize(cross(x, z));
+
+        float4x4 scale = float4x4(
+            s.x, 0.0, 0.0, 0.0,
+            0.0, s.y, 0.0, 0.0,
+            0.0, 0.0, s.z, 0.0,
+            0.0, 0.0, 0.0, 1.0
+        );
+
+        float4x4 translate = float4x4(
+            1.0, 0.0, 0.0, pivot.x,
+            0.0, 1.0, 0.0, pivot.y,
+            0.0, 0.0, 1.0, pivot.z,
+            0.0, 0.0, 0.0, 1.0
+        );
+
+        float4x4 rotate = float4x4(
+            x.x, x.y, x.z, 0.0,
+            y.x, y.y, y.z, 0.0,
+            z.x, z.y, z.z, 0.0,
+            0.0, 0.0, 0.0, 1.0
+        );
+
+        transforms[instance_offset] = mul(mul(translate, rotate), scale);
+        instance_offset += 1;
+    }
+}

@@ -1,0 +1,72 @@
+﻿// Compute Shader pour la segmentation des courbes en fonction du path_mask
+#pragma kernel CSMain
+
+// ⚡ Déclarations globales
+
+RWTexture2D<float4> path_mask;
+float2 path_mask_ws_dims;
+
+StructuredBuffer<CurveData> curves;
+RWStructuredBuffer<ArchSegmentData> segments_buffer;
+RWStructuredBuffer<DispatchIndirectCommand> cmds;
+
+// Structures utilisées
+struct DispatchIndirectCommand {
+    uint num_groups_x;
+    uint num_groups_y;
+    uint num_groups_z;
+};
+
+struct CurveData {
+    uint points_count;
+    uint pad0, pad1, pad2;
+    float4 positions[1000];
+};
+
+struct ArchSegmentData {
+    float2 start;
+    float2 end;
+};
+
+// -------------------------------------------
+// Fonctions utilitaires
+
+int2 WsPosToPixelCoord(float3 ws_pos, int2 img_dims) {
+    float2 texture_uv = ws_pos.xz / path_mask_ws_dims + 0.5;
+    return int2(texture_uv.x * img_dims.x, texture_uv.y * img_dims.y);
+}
+
+float PositionWsToPathMaskValue(float3 position, int2 dims) {
+    int2 pixel_coord = WsPosToPixelCoord(position, dims);
+    return path_mask[pixel_coord].x;
+}
+
+// -------------------------------------------
+// Fonction principale du Compute Shader
+
+[numthreads(1, 1, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID) {
+    uint idx = id.x;
+
+    // Vérifier les dimensions de l'image
+    uint2 dims;
+    path_mask.GetDimensions(dims.x, dims.y);
+
+    uint curve_npt = curves[idx].points_count;
+    if (curve_npt < 2) return;
+
+    for (int i = 0; i < min(curve_npt - 1, 1000); i++) {
+        float3 p1 = curves[idx].positions[i].xyz;
+        float3 p2 = curves[idx].positions[i + 1].xyz;
+
+        float val_1 = PositionWsToPathMaskValue(p1, dims);
+        float val_2 = PositionWsToPathMaskValue(p2, dims);
+
+        if (val_1 > 0 || val_2 > 0) {
+            uint storage_offset;
+            InterlockedAdd(cmds[0].num_groups_x, 1, storage_offset);
+            segments_buffer[storage_offset].start = p1.xz;
+            segments_buffer[storage_offset].end = p2.xz;
+        }
+    }
+}

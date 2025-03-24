@@ -1,0 +1,463 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|c:\\users\\corentin jouan\\documents\\unity\\tinyglade\\assets\\wallmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\wallmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|c:\\users\\corentin jouan\\documents\\unity\\tinyglade\\assets\\scripts\\utils\\wallmanagerdebugger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\utils\\wallmanagerdebugger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\resources\\shaders\\paths.shader||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\resources\\shaders\\paths.shader||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\geometry\\instancedwalls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\geometry\\instancedwalls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\systems\\wall\\drawwall.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\systems\\wall\\drawwall.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\renderloop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\renderloop.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\systems\\wall\\cosntructwallnshadows.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\systems\\wall\\cosntructwallnshadows.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\geometry\\curve.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\geometry\\curve.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\render\\shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\render\\shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\components\\drawable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\components\\drawable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\resources\\shaders\\vertex_color_frag.cginc.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\resources\\shaders\\vertex_color_frag.cginc.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\utils\\boundingboxinjector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\utils\\boundingboxinjector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\resources\\shaders\\paths_vert.cginc.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\resources\\shaders\\paths_vert.cginc.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\systems\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\systems\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\systems\\brushpreview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\systems\\brushpreview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\asset_librairies\\shaderlibrary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\asset_librairies\\shaderlibrary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\systems\\mouseraycast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\systems\\mouseraycast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\utils\\framebuffertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\utils\\framebuffertest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\systems\\modemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\systems\\modemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\ressources\\terrain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ressources\\terrain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\geometry\\wallconstructor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\geometry\\wallconstructor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\geometry\\shadowdecals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\geometry\\shadowdecals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\components\\transientmesh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\components\\transientmesh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\ressources\\events.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ressources\\events.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\assets\\scripts\\geometry\\cube.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6AB8960D-B742-4D38-0FE7-A9E98122F6DC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\geometry\\cube.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Main.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Main.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Main.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Main.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Main.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-19T10:40:34.132Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "RenderLoop.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\RenderLoop.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\RenderLoop.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\RenderLoop.cs",
+              "RelativeToolTip": "Assets\\Scripts\\RenderLoop.cs",
+              "ViewState": "AgIAAHAAAAAAAAAAAAAQwIgAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-22T17:12:57.037Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Paths.shader",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Resources\\shaders\\Paths.shader",
+              "RelativeDocumentMoniker": "Assets\\Resources\\shaders\\Paths.shader",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Resources\\shaders\\Paths.shader",
+              "RelativeToolTip": "Assets\\Resources\\shaders\\Paths.shader",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002777|",
+              "WhenOpened": "2025-03-22T14:22:03.055Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "wallManager.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\wallManager.cs",
+              "RelativeDocumentMoniker": "Assets\\wallManager.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\wallManager.cs",
+              "RelativeToolTip": "Assets\\wallManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-23T18:19:45.457Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "WallManagerDebugger.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Utils\\WallManagerDebugger.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Utils\\WallManagerDebugger.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Utils\\WallManagerDebugger.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Utils\\WallManagerDebugger.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-23T18:16:37.388Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{a80febb4-e7e0-4147-b476-21aaf2453969}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DrawWall.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Systems\\Wall\\DrawWall.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Systems\\Wall\\DrawWall.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Systems\\Wall\\DrawWall.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Systems\\Wall\\DrawWall.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T14:54:04.151Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "InstancedWalls.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Geometry\\InstancedWalls.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Geometry\\InstancedWalls.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Geometry\\InstancedWalls.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Geometry\\InstancedWalls.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAkwAMAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T14:26:55.948Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CosntructWallNShadows.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Systems\\Wall\\CosntructWallNShadows.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Systems\\Wall\\CosntructWallNShadows.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Systems\\Wall\\CosntructWallNShadows.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Systems\\Wall\\CosntructWallNShadows.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAWwGMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T14:42:39.595Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Curve.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Geometry\\Curve.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Geometry\\Curve.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Geometry\\Curve.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Geometry\\Curve.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T14:17:25.488Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Shader.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Render\\Shader.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Render\\Shader.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Render\\Shader.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Render\\Shader.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-22T14:55:43.067Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Drawable.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Components\\Drawable.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Components\\Drawable.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Components\\Drawable.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Components\\Drawable.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAIA0wBkAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-23T12:44:01.52Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Startup.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Systems\\Startup.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Systems\\Startup.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Systems\\Startup.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Systems\\Startup.cs",
+              "ViewState": "AgIAAIoAAAAAAAAAAAA9wJYAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-22T12:22:28.134Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "BoundingBoxInjector.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Utils\\BoundingBoxInjector.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Utils\\BoundingBoxInjector.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Utils\\BoundingBoxInjector.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Utils\\BoundingBoxInjector.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAuwCQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-22T15:34:33.391Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "paths_vert.cginc.txt",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Resources\\shaders\\paths_vert.cginc.txt",
+              "RelativeDocumentMoniker": "Assets\\Resources\\shaders\\paths_vert.cginc.txt",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Resources\\shaders\\paths_vert.cginc.txt",
+              "RelativeToolTip": "Assets\\Resources\\shaders\\paths_vert.cginc.txt",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAcwC8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-03-22T15:58:26.008Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "vertex_color_frag.cginc.txt",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Resources\\shaders\\vertex_color_frag.cginc.txt",
+              "RelativeDocumentMoniker": "Assets\\Resources\\shaders\\vertex_color_frag.cginc.txt",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Resources\\shaders\\vertex_color_frag.cginc.txt",
+              "RelativeToolTip": "Assets\\Resources\\shaders\\vertex_color_frag.cginc.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-03-22T16:17:45.742Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "FrameBufferTest.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Utils\\FrameBufferTest.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Utils\\FrameBufferTest.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Utils\\FrameBufferTest.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Utils\\FrameBufferTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-22T12:42:40.189Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Terrain.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Ressources\\Terrain.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Ressources\\Terrain.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Ressources\\Terrain.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Ressources\\Terrain.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-22T12:23:26.576Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "BrushPreview.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Systems\\BrushPreview.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Systems\\BrushPreview.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Systems\\BrushPreview.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Systems\\BrushPreview.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAgwCYAAABcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-22T12:44:37.968Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "MouseRaycast.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Systems\\MouseRaycast.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Systems\\MouseRaycast.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Systems\\MouseRaycast.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Systems\\MouseRaycast.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-22T12:17:17.581Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ShaderLibrary.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Asset_Librairies\\ShaderLibrary.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Asset_Librairies\\ShaderLibrary.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Asset_Librairies\\ShaderLibrary.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Asset_Librairies\\ShaderLibrary.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAswBkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-22T12:21:37.489Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ModeManager.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Systems\\ModeManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Systems\\ModeManager.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Systems\\ModeManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Systems\\ModeManager.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAvwBwAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T14:57:38.591Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ShadowDecals.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Geometry\\ShadowDecals.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Geometry\\ShadowDecals.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Geometry\\ShadowDecals.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Geometry\\ShadowDecals.cs",
+              "ViewState": "AgIAAAwBAAAAAAAAAAAIwBMBAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T14:24:52.804Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "TransientMesh.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Components\\TransientMesh.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Components\\TransientMesh.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Components\\TransientMesh.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Components\\TransientMesh.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAYwBQAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-22T12:06:45.356Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "WallConstructor.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Geometry\\WallConstructor.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Geometry\\WallConstructor.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Geometry\\WallConstructor.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Geometry\\WallConstructor.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADQAAABWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T14:36:29.946Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Events.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Ressources\\Events.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Ressources\\Events.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Ressources\\Events.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Ressources\\Events.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T15:09:30.697Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "Cube.cs",
+              "DocumentMoniker": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Geometry\\Cube.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Geometry\\Cube.cs",
+              "ToolTip": "C:\\Users\\Corentin Jouan\\Documents\\Unity\\TinyGlade\\Assets\\Scripts\\Geometry\\Cube.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Geometry\\Cube.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T14:26:32.601Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

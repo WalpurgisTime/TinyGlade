@@ -1,0 +1,47 @@
+﻿// paths_vert.cginc
+
+v2f vert(appdata v)
+{
+    v2f o;
+
+    float3 pos_ws = mul(unity_ObjectToWorld, v.vertex).xyz;
+    float2 bbx_min = v.bbx_bounds.xy;
+    float2 bbx_max = v.bbx_bounds.zw;
+
+    float avg = 0.0;
+    avg += tex2D(_PathTex, (bbx_min / 20.0 + 0.5)).r;
+    avg += tex2D(_PathTex, (float2(bbx_max.x, bbx_min.y) / 20.0 + 0.5)).r;
+    avg += tex2D(_PathTex, (float2(bbx_min.x, bbx_max.y) / 20.0 + 0.5)).r;
+    avg += tex2D(_PathTex, (bbx_max / 20.0 + 0.5)).r;
+    avg /= 4.0;
+
+    float seed = bbx_min.x + bbx_min.y + bbx_max.x + bbx_max.y;
+    float threshold = frac(sin(seed * 12.9898) * 43758.5453);
+    threshold = threshold * (0.4 - 0.2) + 0.2;
+
+
+    if (avg > threshold)
+    {
+        pos_ws.y = tex2D(_TerrainTex, (pos_ws.xz / 20.0 + 0.5)).r + 0.01;
+    }
+    else
+    {
+        pos_ws = float3(0,0,0);
+    }
+
+    float rand = frac(sin((seed + 50.0) * 12.9898) * 43758.5453);
+    float randColor = rand * (0.14 - 0.086) + 0.086;
+
+    float h = tex2D(_TerrainTex, (v.vertex.xz / 20.0 + 0.5)).r + 0.4;
+    h = h * h;
+    h = h * (h > 0 ? 1 : -1);
+    h = h * (3.0 - 0.1) + 0.1;
+    h = clamp(h, 0.1, 0.8);
+
+    o.pos = UnityObjectToClipPos(float4(pos_ws, 1.0));
+    o.color = float3(randColor, randColor, randColor) * (h * 2.0);
+    o.color.b *= (1.0 - h);
+    o.uv = v.uv;
+
+    return o;
+}
