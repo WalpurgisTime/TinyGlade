@@ -8,6 +8,7 @@ public class MouseRaycast : MonoBehaviour
 
     private Vector2 cursorScreenPosition;
     public Vector3 cursorWorldPosition;
+    
 
     void Update()
     {
@@ -29,7 +30,7 @@ public class MouseRaycast : MonoBehaviour
     }
 
     /// <summary>
-    /// Convertit la position écran de la souris en position monde et direction du rayon
+    /// Convertit la position ï¿½cran de la souris en position monde et direction du rayon
     /// </summary>
     private (Vector3, Vector3) FromScreenspaceToWorld(Vector2 cursorPosScreen, Camera camera)
     {
@@ -38,12 +39,12 @@ public class MouseRaycast : MonoBehaviour
     }
 
     /// <summary>
-    /// Raymarching le long du rayon pour détecter l'intersection avec le terrain
+    /// Raymarching le long du rayon pour dï¿½tecter l'intersection avec le terrain
     /// </summary>
     private Vector3 RaymarchToTerrain(Vector3 startPos, Vector3 rayDirection)
     {
-        float maxY = terrain.maxY;
-        float minY = terrain.minY;
+        float maxY = terrain.max_y;
+        float minY = terrain.min_y;
 
         Vector3 upperBound = startPos + rayDirection * ((maxY - startPos.y) / rayDirection.y);
         Vector3 lowerBound = startPos + rayDirection * ((minY - startPos.y) / rayDirection.y);
@@ -58,12 +59,12 @@ public class MouseRaycast : MonoBehaviour
 
             if (newP.y < terrain.height_at(newP.x, newP.z))
             {
-                return p; // Intersection trouvée
+                return p; // Intersection trouvï¿½e
             }
 
             p = newP;
         }
 
-        return lowerBound; // Pas d'intersection trouvée
+        return lowerBound; // Pas d'intersection trouvï¿½e
     }
 }

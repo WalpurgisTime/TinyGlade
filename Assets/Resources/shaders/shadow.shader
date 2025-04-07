@@ -43,8 +43,9 @@ Shader "Custom/shadow"
             float sampleTerrainHeight(float2 ws)
             {
                 float2 uv = ws / 20.0 + 0.5;
-                return tex2D(_TerrainTex, uv).r;
+                return tex2Dlod(_TerrainTex, float4(uv, 0, 0)).r;
             }
+
 
             v2f vert (appdata v)
             {

@@ -143,4 +143,8 @@ Shader "Custom/InstancedWall"
                         clip(-1.0);
                     }
                 }
+            }
+        }
+    }
+}        
 

@@ -143,6 +143,10 @@ public class Startup : MonoBehaviour
     public MouseRaycast mouseRaycast;
     public BrushPreview brushPreview;
 
+    public Texture2D terrainTex;
+
+    [SerializeField] private VertexColorTerrain vertexColorTerrain;
+
     [SerializeField]
     public glbMesh[] glb;
 
@@ -164,9 +168,10 @@ public class Startup : MonoBehaviour
         Mesh brushArrow = LoadMeshIntoLibrary("Assets/Resources/meshes/brush_arrow.json", "brush_arrow");
         Mesh brushCircle = LoadMeshIntoLibrary("Assets/Resources/meshes/brush_circle.json", "brush_circle");
         Mesh brushCircleCross = LoadMeshIntoLibrary("Assets/Resources/meshes/brush_circle_cross.json", "brush_circle_cross");
-
+     
         // Charger les Shaders
         Shader vertColor = LoadShaderIntoLibrary("shaders/vertex_color", "vertex_color_shader");
+        Shader terrain_shader = LoadShaderIntoLibrary("shaders/VertexColorTerrain", "terrain_shader");
         //Shader roadShader = LoadShaderIntoLibrary("shaders/Paths", "road_shader");
         Shader roadShader = LoadShaderIntoLibrary("shaders/RoadShader", "road_shader");
         LoadShaderIntoLibrary("shaders/Instanced_wall", "instanced_wall_shader");
@@ -177,9 +182,16 @@ public class Startup : MonoBehaviour
 
         // Création des entités
         CreateEntity(brick, indirectTest, "bricks");
-        CreateEntity(floor, vertColor, "floor", new Vector3(0, 0, 0), 1.0f, new Vector3(-90, 0, 0));
-        //CreateEntity(roadPebbles, roadShader, "roadPebbles", new Vector3(0, 0.1f, 0), 1.0f, new Vector3(180, 0, 0));
-        CreatePebbles(roadPebbles, roadShader, "roadPebbles", new Vector3(0, 0.1f, 0), 1.0f, new Vector3(180, 0, 0));
+        GameObject floorGo = CreateEntity(floor, vertColor, "floor", new Vector3(0, - 1f, 0), 1.0f, new Vector3(0, 0));
+        vertexColorTerrain.ShowMask(floorGo );
+        // Removed the unused statement as it serves no purpose
+
+
+
+        CreatePebbles(roadPebbles, roadShader, "roadPebbles", new Vector3(0, 0.2f - 1f, 0), 1.0f, new Vector3(-45, 0, 0));
+
+
+
         mouseRaycast.cursorIndicator = CreateEntity(brushArrow, vertColor, "brushArrow").transform;
 
 
@@ -287,59 +299,79 @@ public class Startup : MonoBehaviour
        
 
         Material roadMat = new Material(shader);
-        Texture2D terrainTex = Resources.Load<Texture2D>("Textures/fake_terrain_texture");
+        
+        //Texture2D terrainTex = Resources.Load<Texture2D>("Textures/fake_terrain_texture");
         Texture2D pathTex = Resources.Load<Texture2D>("Textures/fake_path_texture"); 
 
         roadMat.SetTexture("_TerrainTex", terrainTex);
         roadMat.SetTexture("_PathTex", pathTex);
+        
         obj.AddComponent<MeshRenderer>().material = roadMat;
 
         obj.transform.position = position;
         obj.transform.rotation = Quaternion.Euler(rotation);
         obj.transform.localScale = Vector3.one * scale;
+
+        var renderEntry = obj.AddComponent<RenderEntry>();
+        ShaderProgram shaderProgram = ShaderProgram.New(shader);
+        renderEntry.gameObject = obj;
+        renderEntry.meshName = "road";
+        renderEntry.shaderName = "road_shader";
+        renderEntry.shader = shaderProgram;
+        renderEntry.isRoad = true;
+
         return obj;
     }
 
 
-
-    Mesh Roadpebbles ()
+    Mesh Roadpebbles()
     {
         Mesh roadPebbles = MeshLoader.LoadJsonAsMesh("Assets/Resources/meshes/road_pebbles.json");
-      
 
-        // Ajout de couleurs blanches (équivalent à add_color([1.0; 3]))
-        if (!roadPebbles.HasVertexAttribute(VertexAttribute.Color))
+        if (roadPebbles == null)
         {
-            Color[] colors = new Color[roadPebbles.vertexCount];
-            for (int i = 0; i < colors.Length; i++)
-            {
-                colors[i] = Color.white;
-            }
-            roadPebbles.colors = colors;
-
-            //Debug.Log("Ajout de couleurs blanches");
+            Debug.LogError("⚠️ Le mesh 'road_pebbles.json' n’a pas pu être chargé.");
+            return null;
         }
 
-        // Ajout d’UVs (équivalent à add_uv())
+        // === Équivalent de Rust: add_color([1.0; 3]) ===
+        if (!roadPebbles.HasVertexAttribute(VertexAttribute.Color))
+        {
+            int vertexCount = roadPebbles.vertexCount;
+            Color[] colors = new Color[vertexCount];
+
+            for (int i = 0; i < vertexCount; i++)
+            {
+                // RGB blanc pur, sans transparence forcée
+                colors[i] = new Color(1.0f, 1.0f, 1.0f);
+            }
+
+            roadPebbles.colors = colors;
+
+            //Debug.Log("✅ Couleur blanche (RGB) ajoutée à tous les sommets.");
+        }
+
+        // === Équivalent de Rust: add_uv() ===
         if (!roadPebbles.HasVertexAttribute(VertexAttribute.TexCoord0))
         {
-            Vector3[] vertices = roadPebbles.vertices;
-            Vector2[] uvs = new Vector2[vertices.Length];
+            int vertexCount = roadPebbles.vertexCount;
+            Vector2[] uvs = new Vector2[vertexCount];
 
-            for (int i = 0; i < vertices.Length; i++)
+            for (int i = 0; i < vertexCount; i++)
             {
-                // Simple mapping XY → UV
-                uvs[i] = new Vector2(vertices[i].x, vertices[i].z);
+                // Tous les UVs mis à (0.0, 0.0)
+                uvs[i] = Vector2.zero;
             }
 
             roadPebbles.uv = uvs;
 
-            Debug.Log("Ajout de coordonnées UV");
+            Debug.Log("✅ Coordonnées UV (0,0) ajoutées à tous les sommets.");
         }
 
-        // Enregistrement dans la bibliothèque
+        // Enregistrement dans la bibliothèque utilisateur
         LoadMeshIntoLibrary(roadPebbles, "road");
-        return roadPebbles;
 
+        return roadPebbles;
     }
+
 }

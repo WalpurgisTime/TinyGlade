@@ -2,18 +2,27 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-// Classe contenant les événements utilisés dans Unity
+// Classe contenant les ï¿½vï¿½nements utilisï¿½s dans Unity
 public static class GameEvents
 {
-    // Événement pour quand une courbe est modifiée
+    // ï¿½vï¿½nement pour quand une courbe est modifiï¿½e
     public class CurveChangedEvent : UnityEvent<int> { }
     public static CurveChangedEvent OnCurveChanged = new CurveChangedEvent();
 
-    // Événement pour quand une courbe est supprimée
+    // ï¿½vï¿½nement pour quand une courbe est supprimï¿½e
     public class CurveDeletedEvent : UnityEvent<int> { }
     public static CurveDeletedEvent OnCurveDeleted = new CurveDeletedEvent();
 
-    // Événement pour quand le mode de pinceau change
+    // ï¿½vï¿½nement pour quand le mode de pinceau change
     public class BrushModeChangedEvent : UnityEvent<BrushMode> { }
     public static BrushModeChangedEvent OnBrushModeChanged = new BrushModeChangedEvent();
+
+    public class MiddleMousePressedEvent : UnityEvent { }
+    public static MiddleMousePressedEvent OnMiddleMousePressed = new MiddleMousePressedEvent();
+
+    public class TextureChangedEvent : UnityEvent{ }
+    public static TextureChangedEvent OnTextureChanged = new TextureChangedEvent();
+
+    public class MiddleMouseReleasedEvent : UnityEvent { }
+    public static MiddleMouseReleasedEvent OnMiddleMouseReleased = new MiddleMouseReleasedEvent();
 }

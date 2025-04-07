@@ -6,7 +6,7 @@ using UnityEngine;
 public class ShaderWatcher : MonoBehaviour
 {
     private FileSystemWatcher fileWatcher;
-    private HashSet<string> changedShaders = new HashSet<string>();
+    public HashSet<string> changedShaders = new HashSet<string>();
     private readonly object lockObject = new object();
 
     public event Action<string> OnShaderChanged;
@@ -35,13 +35,23 @@ public class ShaderWatcher : MonoBehaviour
         }
     }
 
-    void Update()
+    void OnEnable()
+    {
+        GameEvents.OnMiddleMousePressed.AddListener(ShaderWatchUpdated);
+    }
+
+    void OnDisable()
+    {
+        GameEvents.OnMiddleMousePressed.RemoveListener(ShaderWatchUpdated);
+    }
+
+    void ShaderWatchUpdated()
     {
         lock (lockObject)
         {
             foreach (var shaderPath in changedShaders)
             {
-                Debug.Log($"ShaderWatcher: Shader modifié -> {shaderPath}");
+                Debug.Log($"ShaderWatcher: Shader modifiï¿½ -> {shaderPath}");
                 OnShaderChanged?.Invoke(shaderPath);
             }
             changedShaders.Clear();

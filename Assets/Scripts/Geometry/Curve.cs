@@ -9,11 +9,15 @@ public class Curve
     [SerializeField] public List<float> pointsU = new();
     [SerializeField] public float length = 0.0f;
 
+    [SerializeField] public int index;
+
     public Curve()
     {
         points = new List<Vector3>();
         pointsU = new List<float>();
         length = 0.0f;
+        index = 0;
+
     }
 
     public Curve(List<Vector3> pts)
@@ -21,6 +25,8 @@ public class Curve
         points = new List<Vector3>(pts);
         pointsU = new List<float>();
         RecalculateCurve();
+        index = 0;
+      
     }
 
 
@@ -36,25 +42,20 @@ public class Curve
         RecalculateCurve();
     }
 
-    private void RecalculateCurve()
+    public void RecalculateCurve()
     {
 
-
         length = 0.0f;
-
         if (pointsU == null)
         {
             Debug.LogError("RecalculateCurve: pointsU list is null!");
             return;
         }
-
         pointsU.Clear();
-
         for (int i = 0; i < points.Count - 1; i++)
         {
             length += Vector3.Distance(points[i], points[i + 1]);
         }
-
         float lengthTraveled = 0.0f;
         for (int i = 0; i < points.Count; i++)
         {
@@ -63,6 +64,7 @@ public class Curve
             {
                 lengthTraveled += Vector3.Distance(points[i], points[i + 1]);
             }
+           
         }
     }
 
@@ -101,8 +103,9 @@ public class Curve
             newPoints.Add(GetPosAtU(i * targetUSpacing));
         }
 
-        return new Curve { points = newPoints };
+        return new Curve { points = newPoints};
     }
+
 
     public bool IsNear(Vector3 position, float threshold)
     {

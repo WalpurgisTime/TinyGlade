@@ -16,10 +16,14 @@ public class BrushPreviewMarker : MonoBehaviour
 public class BrushPreview : MonoBehaviour
 {
     public MouseRaycast mouseRaycast;
+    public Eraser eraser;
+    public ConstructWallNShadows constructWallNShadows;
+    public WallManagerDebugger wallManagerdebugger;
+    public RenderManager render;
 
     private Dictionary<BrushPreviewType, GameObject> previews;
-    private BrushPreviewType currentPreviewType;
-
+    public BrushPreviewType currentPreviewType;
+    
     public void BrushBindings()
     {
         // Cherche automatiquement les entités dans la scène avec le bon composant
@@ -27,13 +31,14 @@ public class BrushPreview : MonoBehaviour
 
         foreach (var marker in Object.FindObjectsByType<BrushPreviewMarker>(FindObjectsSortMode.None))
         {
-
             previews[marker.type] = marker.gameObject;
         }
 
         DisableAllPreviews();
         GameEvents.OnBrushModeChanged.AddListener(OnBrushModeChanged);
     }
+
+    
     void Update()
     {
         if (previews[currentPreviewType] != null && previews[currentPreviewType].activeSelf)
@@ -48,6 +53,7 @@ public class BrushPreview : MonoBehaviour
 
     void OnBrushModeChanged(BrushMode mode)
     {
+        wallManagerdebugger.wallManager.RemoveWallsWithoutEntities();
         BrushPreviewType keep = mode switch
         {
             BrushMode.Wall => BrushPreviewType.Wall,
@@ -59,6 +65,9 @@ public class BrushPreview : MonoBehaviour
 
         // Eraser All
         currentPreviewType = keep;
+        eraser.Mode = mode;
+        render.brushMode = mode;
+       
 
         foreach (var pair in previews)
         {
@@ -66,8 +75,7 @@ public class BrushPreview : MonoBehaviour
             {
                 bool shouldBeActive = pair.Key == keep;
                 pair.Value.SetActive(shouldBeActive);
-
-        
+                constructWallNShadows.currentMode = ConvertToBrushMode(keep);
             }
             else
             {
@@ -85,4 +93,16 @@ public class BrushPreview : MonoBehaviour
                 pair.Value.SetActive(false);
         }
     }
+
+    private BrushMode ConvertToBrushMode(BrushPreviewType previewType)
+    {
+        return previewType switch
+        {
+            BrushPreviewType.Wall => BrushMode.Wall,
+            BrushPreviewType.Path => BrushMode.Path,
+            BrushPreviewType.Eraser => BrushMode.Eraser,
+            _ => BrushMode.Wall
+        };
+    }
+
 }

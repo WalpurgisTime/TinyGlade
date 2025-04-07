@@ -2,67 +2,190 @@ using UnityEngine;
 
 public class TerrainData : MonoBehaviour
 {
-    public int textureSize = 512; // Taille de la texture
-    public float amp = 1.3f; // Amplitude du bruit
-    public Vector2 offset = Vector2.zero; // Décalage du bruit
-    public float minY, maxY; // Min et Max de la hauteur
+    public int seed = 0;
+    public float amp = 1.3f;
+    public Vector2 offset = Vector2.zero;
+    public Vector2Int texture_dims = new Vector2Int(512, 512);
+    public Texture2D texture;
+    public Texture2D selectableTexture;
+    public Texture2D activateTex;
 
-    private Texture2D heightTexture; // Texture de hauteur
+    [SerializeField] private VertexColorTerrain vertTerrain;
 
-    void Start()
+    [HideInInspector] public float min_y;
+    [HideInInspector] public float max_y;
+
+    private Material material;
+
+    private SimplePerlin perlin;
+
+    void Awake()
     {
+        New();
+        ActiveTexture();
+    }
+    
+    public void GetMaterial(Material mat)
+    {
+        material = mat;
+    }
+
+    void OnEnable()
+    {
+        GameEvents.OnTextureChanged.AddListener(ReworkedTexure);
+    }
+
+
+    void OnDisable()
+    {
+        GameEvents.OnTextureChanged.RemoveListener(ReworkedTexure);
+    }
+
+    private void ReworkedTexure()
+    {
+        Debug.Log("Reworked Texture");
+        ActiveTexture2();
+    }
+
+    public void ActiveTexture2()
+    {
+        if(activateTex == null)
+        {
+            activateTex = selectableTexture;
+        }
+        else if(activateTex == selectableTexture)
+        {
+            activateTex = texture;
+        }
+        else
+        {
+            activateTex = texture;
+        }
+
+        vertTerrain.GiveTexture();
+    }
+    
+
+    public void ActiveTexture()
+    {
+        if(activateTex == null)
+        {
+            activateTex = selectableTexture;
+        }
+        else if(activateTex == selectableTexture)
+        {
+            activateTex = texture;
+        }
+        else
+        {
+            activateTex = selectableTexture;
+        }
+
+        vertTerrain.GiveTexture();
+    }
+    
+
+    public void New()
+    {
+        perlin = new SimplePerlin(seed);
         recalculate_texture();
     }
 
-    /// <summary>
-    /// Recalcule la texture de hauteur à partir du bruit de Perlin
-    /// </summary>
+    
+
     public void recalculate_texture()
     {
-        (Color[] rawPixels, float min, float max) = raw_pixels_f32(textureSize, offset, amp);
+        var (raw_pixels, min, max) = raw_pixels_f32();
 
-        heightTexture = new Texture2D(textureSize, textureSize, TextureFormat.RGBA32, false);
-        heightTexture.SetPixels(rawPixels);
-        heightTexture.Apply();
+        min_y = min;
+        max_y = max;
 
-        minY = min;
-        maxY = max;
+        texture = new Texture2D(texture_dims.x, texture_dims.y, TextureFormat.RFloat, false, true);
+        texture.wrapMode = TextureWrapMode.Clamp;
+        texture.filterMode = FilterMode.Bilinear;
 
-        //Debug.Log($"Texture recalculée. Min: {minY}, Max: {maxY}");
+        Color[] pixels = new Color[texture_dims.x * texture_dims.y];
+
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            float v = raw_pixels[i * 4];
+            pixels[i] = new Color(v, v, v, 1.0f);
+        }
+
+        texture.SetPixels(pixels);
+        texture.Apply();
     }
 
-    /// <summary>
-    /// Retourne la hauteur à une position donnée
-    /// </summary>
     public float height_at(float x, float y)
     {
-        return Mathf.PerlinNoise(offset.x + x, offset.y + y) * amp;
+        return perlin.fbm(offset.x + x, offset.y + y) * amp;
     }
 
-    /// <summary>
-    /// Génère un tableau de pixels basé sur le bruit de Perlin
-    /// </summary>
-    private (Color[], float, float) raw_pixels_f32(int size, Vector2 offset, float amp)
+    public (float[] raw, float min, float max) raw_empty_f32()
     {
-        float minValue = float.MaxValue;
-        float maxValue = float.MinValue;
-        Color[] rawPixels = new Color[size * size];
+        return (new float[texture_dims.x * texture_dims.y * 4], 0f, 0f);
+    }
 
-        for (int y = 0; y < size; y++)
+    public (float[] raw, float min, float max) raw_pixels_f32()
+    {
+        float[] raw = new float[texture_dims.x * texture_dims.y * 4];
+
+        float min_value = float.MaxValue;
+        float max_value = float.MinValue;
+
+        for (int y = 0; y < texture_dims.y; y++)
         {
-            float pY = (y / (float)size) * 20.0f - 10.0f;
+            float p_y = ((float)y / texture_dims.y) * 20.0f - 10.0f;
 
-            for (int x = 0; x < size; x++)
+            for (int x = 0; x < texture_dims.x; x++)
             {
-                float pX = (x / (float)size) * 20.0f - 10.0f;
-                float noiseValue = Mathf.PerlinNoise(pX + offset.x, pY + offset.y) * amp;
-                rawPixels[y * size + x] = new Color(noiseValue, noiseValue, noiseValue, 1.0f);
+                float p_x = ((float)x / texture_dims.x) * 20.0f - 10.0f;
+                float n = perlin.fbm(p_x + offset.x, p_y + offset.y) * amp;
 
-                if (noiseValue < minValue) minValue = noiseValue;
-                if (noiseValue > maxValue) maxValue = noiseValue;
+                int i = (y * texture_dims.x + x) * 4;
+                raw[i + 0] = n;
+                raw[i + 1] = n;
+                raw[i + 2] = n;
+                raw[i + 3] = 1.0f;
+
+                if (n < min_value) min_value = n;
+                if (n > max_value) max_value = n;
             }
         }
 
-        return (rawPixels, minValue, maxValue);
+        return (raw, min_value, max_value);
     }
 }
+
+public class SimplePerlin
+{
+    private int seed;
+    private System.Random rng;
+
+    public int octaves = 3;
+    public float gain = 1.0f;
+    public float lacunarity = 3.0f;
+    public float frequency = 0.05f;
+
+    public SimplePerlin(int seed)
+    {
+        this.seed = seed;
+        rng = new System.Random(seed);
+    }
+
+    public float fbm(float x, float y)
+    {
+        float total = 0f;
+        float freq = frequency;
+        float amp = 1f;
+
+        for (int i = 0; i < octaves; i++)
+        {
+            total += Mathf.PerlinNoise(x * freq, y * freq) * amp;
+            freq *= lacunarity;
+            amp *= gain;
+        }
+
+        return total;
+    }
+} 

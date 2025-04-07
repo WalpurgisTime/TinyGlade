@@ -8,9 +8,13 @@ public class CurvePreview: MonoBehaviour
 
     [Header("References")]
     public WallManagerDebugger wallManagerDebugger;
+
+    public ConstructWallNShadows construct;
     public Material debugMaterial;
 
     private Dictionary<int, GameObject> curvePreviewEntities = new();
+
+    public int MaxValue;
 
     private void OnEnable()
     {
@@ -29,16 +33,47 @@ public class CurvePreview: MonoBehaviour
         var wall = wallManagerDebugger.wallManager.GetWall(curveIndex);
         if (wall == null || wall.curve == null) return;
 
-        if (curvePreviewEntities.ContainsKey(curveIndex))
+        wall.curve.index = curveIndex;
+        MaxValue = MaxValue<curveIndex ? curveIndex : MaxValue;
+
+        if(construct.currentMode != BrushMode.Eraser)
         {
-            UpdateCurveMesh(curvePreviewEntities[curveIndex], wall.curve);
+            if (curvePreviewEntities.ContainsKey(curveIndex))
+            {
+                UpdateCurveMesh(curvePreviewEntities[curveIndex], wall.curve);
+            }
+            else
+            {
+                GameObject preview = CreateCurvePreviewEntity(wall.curve);
+                curvePreviewEntities[curveIndex] = preview;
+                wall.curvePreviewEntity = preview;
+            }
         }
         else
         {
-            GameObject preview = CreateCurvePreviewEntity(wall.curve);
-            curvePreviewEntities[curveIndex] = preview;
-            wall.curvePreviewEntity = preview;
-        }
+            //Debug.Log(curveIndex + " curve data ");
+            if (curvePreviewEntities.ContainsKey(curveIndex))
+            {
+                UpdateCurveMesh(curvePreviewEntities[curveIndex], wall.curve);
+            }
+            else
+            {
+               
+                if(construct.Erased != 2)
+                {
+                    GameObject preview = CreateCurvePreviewEntity(wall.curve);
+                    curvePreviewEntities[curveIndex] = preview;
+                    wall.curvePreviewEntity = preview;
+                }
+                if(construct.Erased == 2)
+                {
+                    Debug.Log("Called Curve New Wall");
+                    GameObject preview = CreateCurvePreviewEntity(wall.curve);
+                    curvePreviewEntities[curveIndex] = preview;
+                    wall.curvePreviewEntity = preview;
+                }
+            }
+        }    
     }
 
     private GameObject CreateCurvePreviewEntity(Curve curve)

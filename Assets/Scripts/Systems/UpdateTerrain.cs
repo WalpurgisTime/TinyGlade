@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class UpdateTerrain : MonoBehaviour
 {
-    public TerrainData terrain; // Référence au script TerrainData
+    public TerrainData terrain; // Rï¿½fï¿½rence au script TerrainData
 
     void Update()
     {
@@ -12,18 +12,27 @@ public class UpdateTerrain : MonoBehaviour
         {
             terrain.offset += new Vector2(0.06f, 0.06f);
             terrain.recalculate_texture();
+            GameEvents.OnTextureChanged.Invoke();
+
+
+
         }
 
+        
         if (Input.GetKey(KeyCode.Q))
         {
+
             terrain.amp += 0.03f;
+
             terrain.recalculate_texture();
+            GameEvents.OnTextureChanged.Invoke();
         }
 
         if (Input.GetKey(KeyCode.E))
         {
             terrain.amp -= 0.03f;
             terrain.recalculate_texture();
+            GameEvents.OnTextureChanged.Invoke();
         }
     }
 }

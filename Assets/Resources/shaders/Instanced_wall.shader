@@ -8,6 +8,9 @@ Shader "Unlit/Instanced_wall"
         _ComputeTexture ("Compute Texture", 2D) = "white" {}
         _WallLength ("Wall Length", Float) = 1.0
         _IsArch ("Is Arch", Float) = 0.0
+        _CameraPosition ("Camera Position", Vector) = (0,0,0)
+
+
     }
     SubShader
     {
@@ -20,6 +23,8 @@ Shader "Unlit/Instanced_wall"
             #pragma vertex vert
             #pragma fragment frag
             #include "UnityCG.cginc"
+           
+
 
             struct appdata_t
             {
@@ -46,6 +51,7 @@ Shader "Unlit/Instanced_wall"
             float4 _Color;
             float _WallLength;
             float _IsArch;
+            float3 _CameraPosition;
 
             struct InstancedWallData
             {
@@ -68,7 +74,7 @@ Shader "Unlit/Instanced_wall"
 
             float random( int p ) 
             {
-               return fract(sin(dot(float(p), 311.7)) * 43758.5453);
+               return frac(sin(dot(float(p), 311.7)) * 43758.5453);
             }
 
             float fit01(float x, float min, float max)
@@ -136,7 +142,9 @@ Shader "Unlit/Instanced_wall"
 
             float3 fresnel(float3 f0, float LoH)
             {
-                float f90 = saturate(dot(f0, float3(50.0 * 0.33)));
+                //float f90 = saturate(dot(f0, float3(50.0 * 0.33)));
+                float f90 = saturate(dot(f0, float3(16.5, 16.5, 16.5))); // ✅
+
                 return F_Schlick(f0, f90, LoH);
             }
 
@@ -259,8 +267,9 @@ Shader "Unlit/Instanced_wall"
 
            fixed4 frag(v2f i) : SV_Target
            {
-               vec3 light_pos = vec3(4.0, 8.0, 4.0);
-               vec4 light_color = vec4(1.0);
+               float3 light_pos = float3(4.0, 8.0, 4.0);
+               float4 light_color = float4(1.0, 1.0, 1.0, 1.0);  
+
                float light_intensity = 200.0;
                float light_radius = 20.0;
                float perceptual_roughness = 0.9;
@@ -268,46 +277,53 @@ Shader "Unlit/Instanced_wall"
                float metallic = 0.0;
                float reflectance = 0.1;
 
-               float r = gaussian_rand(vec2(i.instanceID + 4), 0);
+               float r = gaussian_rand(float2(i.instanceID + 4, 0), 0);
+
                r = clamp(r, 0.2, 1.0);
                r = fit01(r, 0.1, 0.35);
-               vec4 output_color = vec4(vec3(r), 1.0);
+               float4 output_color = float4(r, r, r, 1.0); 
 
-               vec3 N = normalize(i.worldNormal);
-               vec3 V = normalize(camera_position - i.worldPos);
+
+               float3 N = normalize(i.worldNormal);
+               //float3 V = normalize(camera_position - i.worldPos);
+               float3 V = normalize(_CameraPosition - i.worldPos); 
+
                float NdotV = max(dot(N, V), 1e-4);
 
-               vec3 diffuseColor = output_color.rgb * (1.0 - metallic);
+               float3 diffuseColor = output_color.rgb * (1.0 - metallic);
 
-               vec3 light_accum = vec3(0.0);
+               float3 light_accum = float3(0.0, 0.0, 0.0); 
 
-               vec3 lightDir = light_pos - i.worldPos;
-               vec3 L = normalize(lightDir);
+
+               float3 lightDir = light_pos - i.worldPos;
+               float3 L = normalize(lightDir);
 
                float inverseRadiusSquared = (1.0 / light_radius) * (1.0 / light_radius);
                float rangeAttenuation = getDistanceAttenuation(lightDir, inverseRadiusSquared) * light_intensity;
 
-               vec3 H = normalize(L + V);
+               float3 H = normalize(L + V);
                float NoL = saturate(dot(N, L));
                float NoH = saturate(dot(N, H));
                float LoH = saturate(dot(L, H));
 
-               vec3 F0 = 0.16 * reflectance * reflectance * (1.0 - metallic) + output_color.rgb * metallic;
+               float3 F0 = 0.16 * reflectance * reflectance * (1.0 - metallic) + output_color.rgb * metallic;
 
-               vec3 specular = specular(F0, roughness, H, NdotV, NoL, NoH, LoH);
-               vec3 diffuse = diffuseColor * Fd_Burley(roughness, NdotV, NoL, LoH);
+               //float3 specular = specular(F0, roughness, H, NdotV, NoL, NoH, LoH);
+               float3 spec = specular(F0, roughness, H, NdotV, NoL, NoH, LoH);
+               float3 diffuse = diffuseColor * Fd_Burley(roughness, NdotV, NoL, LoH);
 
-               light_accum += ((diffuse + specular) * light_color.rgb) * (rangeAttenuation * NoL * 1.2);
+               //light_accum += ((diffuse + specular) * light_color.rgb) * (rangeAttenuation * NoL * 1.2);
+               light_accum += ((diffuse + spec) * light_color.rgb) * (rangeAttenuation * NoL * 1.2);
 
-               vec3 diffuse_ambient = EnvBRDFApprox(diffuseColor, 1.0, NdotV) * pow((1.0 - NoL), 5.0) * 5.0;
-               vec3 specular_ambient = EnvBRDFApprox(F0, perceptual_roughness, NdotV);
+               float3 diffuse_ambient = EnvBRDFApprox(diffuseColor, 1.0, NdotV) * pow((1.0 - NoL), 5.0) * 5.0;
+               float3 specular_ambient = EnvBRDFApprox(F0, perceptual_roughness, NdotV);
 
                output_color.rgb = light_accum;
                output_color.rgb += (diffuse_ambient + specular_ambient) * 0.075;
 
                if (_IsArch == 0.0)
                {
-                  vec2 texture_uv = (i.curvePos.xz / 20.0 + 0.5);
+                  float2 texture_uv = (i.curvePos.xz / 20.0 + 0.5);
                   float texture_color = tex2D(_ComputeTexture, texture_uv).r;
 
                   float height_threshold = arch_function(texture_color);

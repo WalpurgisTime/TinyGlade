@@ -1,9 +1,88 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
-using Unity.Entities;
 using UnityEngine;
+
+public class GLShaderStorageBuffer<T> where T : struct
+{
+    public ComputeBuffer id { get; private set; }
+    public int buffer_size { get; private set; }
+    public int instance_num { get; private set; }
+    public uint binding_point { get; private set; }
+
+    private int stride;
+
+    public static GLShaderStorageBuffer<T> new_(List<T> data, int buffer_size, uint binding_point)
+    {
+        GLShaderStorageBuffer<T> ssbo = new GLShaderStorageBuffer<T>();
+        ssbo.id = create_storage_buffer<T>(buffer_size);
+        ssbo.buffer_size = buffer_size;
+        ssbo.instance_num = data.Count;
+        ssbo.binding_point = binding_point;
+        ssbo.stride = Marshal.SizeOf<T>();
+
+        ssbo.id.SetData(data);
+        //Debug.Log($"[SSBO] Created a new storage buffer, id: {ssbo.gl_id()}");
+        return ssbo;
+    }
+
+    public void update(List<T> data)
+    {
+        if (data.Count > buffer_size)
+            throw new ArgumentException("Data exceeds buffer size");
+
+        id.SetData(data);
+        instance_num = data.Count;
+    }
+
+    public void update_element(T data, int index)
+    {
+        if (index >= buffer_size)
+            throw new ArgumentOutOfRangeException();
+
+        id.SetData(new T[] { data }, 0, index, 1);
+    }
+
+    public void bind(Material shader_program, string name)
+    {
+        shader_program.SetBuffer(name, id);
+    }
+
+    public int gl_id()
+    {
+        return id.GetNativeBufferPtr().ToInt32();
+    }
+
+    public void drop()
+    {
+        if (id != null)
+        {
+            //Debug.Log($"[SSBO] {gl_id()} has been dropped");
+            id.Release();
+            id = null;
+        }
+    }
+
+    // �quivaut � la fonction Rust `create_storage_buffer<T>`
+   public static ComputeBuffer create_storage_buffer<TType>(int size) where TType : struct
+{
+    int stride = Marshal.SizeOf(typeof(TType));
+
+    if (stride <= 0 || stride > 2048 || stride % 4 != 0)
+    {
+        //Debug.LogError($"[❌ INVALID STRIDE] TType = {typeof(TType).Name}, stride = {stride}");
+        //Debug.LogError(Environment.StackTrace); // pour savoir d'où ça vient
+    }
+    else
+    {
+        //Debug.Log($"[✅ BUFFER] {typeof(TType).Name} | size = {size} | stride = {stride}");
+    }
+
+    return new ComputeBuffer(size, stride);
+}
+
+}
+
 
 /*
 public class GLShaderStorageBuffer<T> where T : struct

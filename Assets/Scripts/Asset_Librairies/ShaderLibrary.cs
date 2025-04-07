@@ -3,17 +3,17 @@ using UnityEngine;
 
 public class ShaderLibrary : MonoBehaviour
 {
-    private Dictionary<string, Shader> shadersByName = new Dictionary<string, Shader>();
+    public Dictionary<string, Shader> shadersByName = new Dictionary<string, Shader>();
     private Dictionary<int, Shader> shadersByHandle = new Dictionary<int, Shader>();
     private Dictionary<string, ComputeShader> computeShadersByName = new Dictionary<string, ComputeShader>();
     private Dictionary<int, ComputeShader> computeShadersByHandle = new Dictionary<int, ComputeShader>();
-    private int handleCounter = 0; // Génère un ID unique
+    private int handleCounter = 0; // Gï¿½nï¿½re un ID unique
 
     public int AddShader(string name, Shader shader)
     {
         if (shadersByName.ContainsKey(name))
         {
-            Debug.LogError($"ShaderLibrary: Le shader '{name}' existe déjà !");
+            Debug.LogError($"ShaderLibrary: Le shader '{name}' existe dï¿½jï¿½ !");
             return -1;
         }
 
@@ -21,7 +21,7 @@ public class ShaderLibrary : MonoBehaviour
         shadersByName[name] = shader;
         shadersByHandle[handle] = shader;
 
-        //Debug.Log($"Shader ajouté: {name} (Handle: {handle})");
+        //Debug.Log($"Shader ajoutï¿½: {name} (Handle: {handle})");
         return handle;
     }
 
@@ -29,7 +29,7 @@ public class ShaderLibrary : MonoBehaviour
     {
         if (computeShadersByName.ContainsKey(name))
         {
-            Debug.LogError($"ShaderLibrary: Le Compute Shader '{name}' existe déjà !");
+            Debug.LogError($"ShaderLibrary: Le Compute Shader '{name}' existe dï¿½jï¿½ !");
             return -1;
         }
 
@@ -37,7 +37,7 @@ public class ShaderLibrary : MonoBehaviour
         computeShadersByName[name] = computeShader;
         computeShadersByHandle[handle] = computeShader;
 
-        //Debug.Log($"Compute Shader ajouté: {name} (Handle: {handle})");
+        //Debug.Log($"Compute Shader ajoutï¿½: {name} (Handle: {handle})");
         return handle;
     }
 
@@ -115,7 +115,7 @@ public class ShaderLibrary : MonoBehaviour
         Shader shader = GetShaderByName(shaderName);
         if (shader == null)
         {
-            Debug.LogError($"Shader '{shaderName}' introuvable. Impossible de créer le matériau.");
+            Debug.LogError($"Shader '{shaderName}' introuvable. Impossible de crï¿½er le matï¿½riau.");
             return null;
         }
 

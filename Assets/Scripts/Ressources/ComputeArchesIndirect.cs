@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Runtime.InteropServices;
-
+using System;
 public class ComputeArchesIndirect : MonoBehaviour
 {
     public ComputeShader computeShader;
@@ -26,7 +26,7 @@ public class ComputeArchesIndirect : MonoBehaviour
         public uint baseInstance;
     }
 
-
+    
     [StructLayout(LayoutKind.Sequential)]
     public unsafe struct CurveDataSSBO
     {
@@ -35,7 +35,84 @@ public class ComputeArchesIndirect : MonoBehaviour
         public uint pad1;
         public uint pad2;
 
-        public fixed float positions[1000 * 4]; // Tableau FIXE pour Ítre blittable
+        public const int MAX_POINTS = 1000;
+
+        public fixed float positions[MAX_POINTS * 4]; // x, y, z, w pour chaque point
+
+        // Remplit la struct depuis un tableau de Vector3
+        public static CurveDataSSBO FromCurve(Vector3[] curvePoints)
+        {
+            CurveDataSSBO data = new CurveDataSSBO
+            {
+                pointsCount = (uint)curvePoints.Length,
+                pad0 = 0,
+                pad1 = 0,
+                pad2 = 0
+            };
+
+            if (curvePoints.Length > MAX_POINTS)
+                throw new ArgumentException($"Trop de points ({curvePoints.Length}). Max autoris√© = {MAX_POINTS}");
+
+            for (int i = 0; i < curvePoints.Length; i++)
+            {
+                data.positions[i * 4 + 0] = curvePoints[i].x;
+                data.positions[i * 4 + 1] = curvePoints[i].y;
+                data.positions[i * 4 + 2] = curvePoints[i].z;
+                data.positions[i * 4 + 3] = 1.0f;
+            }
+
+            return data;
+        }
+
+        public static CurveDataSSBO Empty()
+        {
+            CurveDataSSBO data = new CurveDataSSBO
+            {
+                pointsCount = 0,
+                pad0 = 0,
+                pad1 = 0,
+                pad2 = 0
+            };
+
+            for (int i = 0; i < MAX_POINTS * 4; i++)
+            {
+                data.positions[i] = 0.0f;
+            }
+
+            return data;
+        }
+
+        // ‚úÖ Exporte le contenu vers un tableau GPU-compatible
+        public Vector4[] ToVector4Array()
+        {
+            Vector4[] result = new Vector4[pointsCount];
+            fixed (float* ptr = positions)
+            {
+                for (int i = 0; i < pointsCount; i++)
+                {
+                    result[i] = new Vector4(
+                        ptr[i * 4 + 0],
+                        ptr[i * 4 + 1],
+                        ptr[i * 4 + 2],
+                        ptr[i * 4 + 3]
+                    );
+                }
+            }
+
+            return result;
+        }
+    }
+
+    /*
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe struct CurveDataSSBO
+    {
+        public uint pointsCount;
+        public uint pad0;
+        public uint pad1;
+        public uint pad2;
+
+        public fixed float positions[1000 * 4]; // Tableau FIXE pour ÔøΩtre blittable
 
         public static CurveDataSSBO FromCurve(Vector3[] curvePoints)
         {
@@ -52,7 +129,7 @@ public class ComputeArchesIndirect : MonoBehaviour
                 data.positions[i * 4 + 0] = curvePoints[i].x;
                 data.positions[i * 4 + 1] = curvePoints[i].y;
                 data.positions[i * 4 + 2] = curvePoints[i].z;
-                data.positions[i * 4 + 3] = 1.0f; // CoordonnÈe homogËne
+                data.positions[i * 4 + 3] = 1.0f; // CoordonnÔøΩe homogÔøΩne
             }
 
             return data;
@@ -76,6 +153,7 @@ public class ComputeArchesIndirect : MonoBehaviour
             return data;
         }
     }
+    */
 
 
 
@@ -102,6 +180,7 @@ public ComputeArchesIndirect(ShaderWatcher shaderwatch, ShaderLibrary shaderLibr
 
     void InitBuffers()
     {
+        /*
         // Buffer pour transformations
         transformsBuffer = new ComputeBuffer(INSTANCE_COUNT, Marshal.SizeOf(typeof(Matrix4x4)), ComputeBufferType.Structured);
 
@@ -113,6 +192,39 @@ public ComputeArchesIndirect(ShaderWatcher shaderwatch, ShaderLibrary shaderLibr
 
         // Buffer pour les segments
         segmentsBuffer = new ComputeBuffer(INSTANCE_COUNT, Marshal.SizeOf(typeof(Vector4)), ComputeBufferType.Structured);
+        */
+
+        int s1 = Marshal.SizeOf(typeof(Matrix4x4));
+        //Debug.Log($"[Init] Matrix4x4 stride = {s1}"); // Devrait √™tre 64
+
+        transformsBuffer = new ComputeBuffer(INSTANCE_COUNT, s1, ComputeBufferType.Structured);
+
+        int s2 = Marshal.SizeOf(typeof(DrawElementsIndirectCommand));
+        //Debug.Log($"[Init] Indirect stride = {s2}");
+        drawIndirectCommandBuffer = new ComputeBuffer(COMMAND_BUFFER_SIZE, s2, ComputeBufferType.IndirectArguments);
+
+        
+        /*
+        int s3 = Marshal.SizeOf(typeof(CurveDataSSBO));
+        Debug.Log($"[Init] CurveDataSSBO stride = {s3}");
+        curvesBuffer = new ComputeBuffer(1, s3, ComputeBufferType.Structured);
+        */
+
+        // Buffer avec stride de Vector4 (x, y, z, w)
+        curvesBuffer = new ComputeBuffer(CurveDataSSBO.MAX_POINTS, sizeof(float) * 4, ComputeBufferType.Structured);
+
+        // Initialisation avec des vecteurs (tout √† z√©ro)
+        Vector4[] emptyPoints = new Vector4[CurveDataSSBO.MAX_POINTS];
+        for (int i = 0; i < emptyPoints.Length; i++)
+            emptyPoints[i] = Vector4.zero;
+
+        curvesBuffer.SetData(emptyPoints);
+
+
+        int s4 = Marshal.SizeOf(typeof(Vector4));
+        //Debug.Log($"[Init] Vector4 stride = {s4}");
+        segmentsBuffer = new ComputeBuffer(INSTANCE_COUNT, s4, ComputeBufferType.Structured);
+
 
         // Initialisation des commandes de rendu
         DrawElementsIndirectCommand[] drawCommand = new DrawElementsIndirectCommand[1];
@@ -127,7 +239,10 @@ public ComputeArchesIndirect(ShaderWatcher shaderwatch, ShaderLibrary shaderLibr
         // Initialisation du buffer de courbes avec des valeurs vides
         CurveDataSSBO[] emptyCurve = new CurveDataSSBO[1];
         emptyCurve[0] = CurveDataSSBO.Empty();
-        curvesBuffer.SetData(emptyCurve);
+        
+        //curvesBuffer.SetData(emptyCurve);
+
+
     }
 
     void InitPathMask()
@@ -156,6 +271,39 @@ public ComputeArchesIndirect(ShaderWatcher shaderwatch, ShaderLibrary shaderLibr
         computeShader.SetVector("path_mask_ws_dims", new Vector2(20.0f, 20.0f)); // Simule `path_mask_ws_dims`
     }
 
+    public void Bind(ShaderLibrary shaderLibrary,ComputeBuffer segmentsBuffer,RenderTexture pathMask,Vector2 pathMaskWsDims)
+    {
+        ComputeShader shader = shaderLibrary.GetComputeShaderByName("shaders/arch_layout_bricks");
+        if (shader == null)
+        {
+            Debug.LogError("Compute shader introuvable !");
+            return;
+        }
+
+        int kernel = shader.FindKernel("CSMain");
+        shader.SetBuffer(kernel, "draw_commands", drawIndirectCommandBuffer);
+        shader.SetBuffer(kernel, "transforms_buffer", transformsBuffer);
+        shader.SetVector("path_mask_ws_dims", pathMaskWsDims);
+        shader.SetTexture(kernel, "PathMaskTexture", pathMask);
+        shader.SetBuffer(kernel, "segments_buffer", segmentsBuffer);
+    }
+
+    public void DispatchIndirect()
+    {
+        if (computeShader == null)
+        {
+            Debug.LogError("ComputeShader non assign√© !");
+            return;
+        }
+
+        int kernel = computeShader.FindKernel("CSMain");
+
+        // ‚ö†Ô∏è Assurez-vous que le buffer drawIndirectCommandBuffer contient bien un dispatch command
+        computeShader.DispatchIndirect(kernel, drawIndirectCommandBuffer, 0);
+    }
+
+
+
     public void ResetDrawCommandBuffer()
     {
         DrawElementsIndirectCommand[] drawCommand = new DrawElementsIndirectCommand[1];
@@ -178,16 +326,26 @@ public ComputeArchesIndirect(ShaderWatcher shaderwatch, ShaderLibrary shaderLibr
         transformsBuffer.SetData(identityMatrices);
     }
 
-    void Update()
+    void OnEnable()
+    {
+        GameEvents.OnMiddleMousePressed.AddListener(ComputeUpdated);
+    }
+
+    void OnDisable()
+    {
+        GameEvents.OnMiddleMousePressed.RemoveListener(ComputeUpdated);
+    }
+
+    void ComputeUpdated()
     {
         if (computeShader == null) return;
 
         int kernelHandle = computeShader.FindKernel("CSMain");
 
-        // ExÈcuter le Compute Shader
+        // ExÔøΩcuter le Compute Shader
         computeShader.Dispatch(kernelHandle, INSTANCE_COUNT / 64, 1, 1);
 
-        // Lier les buffers au matÈriel et exÈcuter le rendu indirect
+        // Lier les buffers au matÔøΩriel et exÔøΩcuter le rendu indirect
         renderMaterial.SetBuffer("transformsBuffer", transformsBuffer);
         Graphics.DrawProceduralIndirect(renderMaterial, new Bounds(Vector3.zero, Vector3.one * 10), MeshTopology.Triangles, drawIndirectCommandBuffer);
     }

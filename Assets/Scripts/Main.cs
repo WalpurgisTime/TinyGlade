@@ -5,12 +5,13 @@ public class Main : MonoBehaviour
     private ShaderWatcher temp_shaderwatch;
     public ShaderLibrary temp_assets_shader;
     public RenderManager render_manager;
+    public VAOUpdate vao_updater;
 
     // COMPUTE SHADERS -------------------------------------------
-    private ComputePathMask compute_paths_mask;
-    private ComputePathBlur compute_paths_blur;
-    private CurveSegmentsComputePass compute_curve_segments;
-    private ComputeArchesIndirect compute_arches_indirect;
+    public ComputePathMask compute_paths_mask;
+    public ComputePathBlur compute_paths_blur;
+    public CurveSegmentsComputePass compute_curve_segments;
+    public ComputeArchesIndirect compute_arches_indirect;
 
     
 
@@ -36,15 +37,31 @@ public class Main : MonoBehaviour
         compute_curve_segments = new CurveSegmentsComputePass(temp_shaderwatch, temp_assets_shader);
         compute_arches_indirect = new ComputeArchesIndirect(temp_shaderwatch, temp_assets_shader);
 
-        render_manager.Render();
+        //render_manager.Render();
 
     }
 
-    void Update()
+    void OnEnable()
     {
-        //construct.walls_update();
+        GameEvents.OnMiddleMousePressed.AddListener(VAOUpdated);
+    }
+
+    void OnDisable()
+    {
+        GameEvents.OnMiddleMousePressed.RemoveListener(VAOUpdated);
+    }
+
+
+
+    private void VAOUpdated()
+    {
+        vao_updater.BuildMissingVAOs();
+        vao_updater.RebuildVAOs();
+
     }
 }
+
+
 
 /*
  using UnityEngine;

@@ -5,10 +5,16 @@ using UnityEngine.UIElements;
 public class ConstructWallNShadows : MonoBehaviour
 {
     public BrushMode currentMode;
-
+    public bool IsWallActivated;
     public WallManagerDebugger wallManagerdebugger;
     public MeshLibrary assetMeshLibrary;
     public ShaderLibrary assetShaderLibrary;
+
+    public RenderManager render_manager;
+    public List<Material> brickMaterials; 
+    public int Erased;
+
+
 
     public Material redMaterial;
 
@@ -27,19 +33,72 @@ public class ConstructWallNShadows : MonoBehaviour
 
     void OnCurveChangedEvent(int curveIndex)
     {
-        curveChangedBuffer.Add(curveIndex);
-        walls_update(); 
+        if(currentMode == BrushMode.Wall )
+        {
+            curveChangedBuffer.Add(curveIndex);
+
+        }
+        walls_update();
+        render_manager.Render();
+
+        if(currentMode == BrushMode.Eraser)
+        {
+            //Debug.Log(curveIndex + "wallData");
+            Wall changedWall = wallManagerdebugger.wallManager.GetWall(curveIndex);
+            
+            if(Erased == 1)
+            {
+                changedWall.curve.RecalculateCurve();
+                ClearBricks(changedWall.wallEntity);
+                List<Brick> bricks = WallConstructor.FromCurve(changedWall.curve);
+                FillBricks(changedWall.wallEntity, bricks);
+
+                Erased = 0;
+            }
+            else if(Erased == 2)
+            {
+                changedWall.curve.RecalculateCurve();
+                List<Brick> bricks = WallConstructor.FromCurve(changedWall.curve);
+                changedWall.wallEntity = CreateWall(changedWall.curve.length,bricks);
+                wallManagerdebugger.wallManager.RemoveWallsWithoutEntities();
+                
+                
+                // === SHADOW DECAL ===
+                if (changedWall.shadowEntity != null)
+                {
+                    var meshFilter = changedWall.shadowEntity.GetComponent<MeshFilter>();
+                    Mesh mesh = meshFilter.sharedMesh;
+                    ShadowDecal.Update(changedWall.curve, mesh);
+                }
+                else
+                {
+                    changedWall.shadowEntity = ShadowDecal.New(
+                        changedWall.curve,
+                        assetMeshLibrary,
+                        assetShaderLibrary
+                    );
+                }
+
+                Erased = 0;
+                
+
+            }
+
+        }
+
     }
 
     public void walls_update()
     {
+
         // Check mode
-        if (currentMode != BrushMode.Wall && currentMode != BrushMode.EraserAll)
+        if (currentMode != BrushMode.Wall && currentMode != BrushMode.Eraser)
             return;
 
         foreach (int curveIndex in curveChangedBuffer)
         {
             Wall changedWall = wallManagerdebugger.wallManager.GetWall(curveIndex);
+
             if (changedWall == null)
             {
                 Debug.LogError($"Wall construction failed: couldn't get Wall index {curveIndex}");
@@ -61,17 +120,17 @@ public class ConstructWallNShadows : MonoBehaviour
             {
                 InstancedWall wallComponent = changedWall.wallEntity.GetComponent<InstancedWall>();
                 wallComponent.UpdateWall(changedWall.curve.length, bricks);
+            
 
                 // Clear bricks  + Creation # SUP
                 ClearBricks(changedWall.wallEntity);
-                changedWall.wallEntity = CreateWall(
-                    changedWall.curve.length,
-                    bricks
-                );
+                FillBricks(changedWall.wallEntity, bricks);
+                
+
             }
             else
             {
-                Debug.Log("creating wall..");
+                //Debug.Log("creating wall..");
                 changedWall.wallEntity = CreateWall(
                     changedWall.curve.length,
                     bricks
@@ -95,77 +154,114 @@ public class ConstructWallNShadows : MonoBehaviour
             }
         }
 
-        Debug.Log("Wall construction done");
+        //Debug.Log("Wall construction done");
 
         curveChangedBuffer.Clear();
     }
 
     private GameObject CreateWall(float curveLength, List<Brick> bricks)
     {
-        GameObject wallGO = new GameObject("InstancedWall");
+        //Debug.Log("Called");
+        InstancedWall wallComponent = InstancedWall.From(curveLength, bricks);
+        GameObject wallGO = wallComponent.gameObject;
+        wallManagerdebugger.wallManager.NewWallGameObject(wallGO);
+
         wallGO.AddComponent<MeshFilter>();
         wallGO.AddComponent<MeshRenderer>();
 
-        var wallComponent = wallGO.AddComponent<InstancedWall>();
-        wallComponent.Init(curveLength, bricks);
-
         Mesh mesh = assetMeshLibrary.GetMeshByName("bricks");
         Shader shader = assetShaderLibrary.GetShaderByName("instanced_wall_shader");
+        ShaderProgram shaderProgram = ShaderProgram.New(shader);
 
-        // ✅ AJOUT : vérifie si shader est null
+        var renderEntry = wallGO.AddComponent<RenderEntry>();
+        renderEntry.gameObject = wallGO;
+        renderEntry.instancedWall = wallComponent;
+        renderEntry.meshName = "bricks";
+        renderEntry.shaderName = "instanced_wall_shader";
+        renderEntry.shader = shaderProgram;
+
         if (shader == null)
         {
             Debug.LogError("[ConstructWallNShadows] Shader 'instanced_wall_shader' not found in ShaderLibrary!");
             return wallGO;
         }
-
-        Material material = new Material(shader);
         wallGO.GetComponent<MeshFilter>().mesh = mesh;
-        wallGO.GetComponent<MeshRenderer>().material = material;
+        wallGO.GetComponent<MeshRenderer>().material =  renderEntry.shader.Material;
 
-        // CREATION DE BRICK # SUP
+        FillBricks(wallGO, bricks);
+
+        return wallGO;
+    }
+
+    public void IsActivated() => IsWallActivated = !IsWallActivated;
+    private void FillBricks(GameObject wallGO, List<Brick> bricks)
+    {
+        if (wallGO == null)
+        {
+            Debug.LogWarning("FillBricks called with null wall GameObject.");
+            return;
+        }
+
+        if (brickMaterials == null || brickMaterials.Count == 0)
+        {
+            Debug.LogWarning("No materials assigned in brickMaterials list.");
+            return;
+        }
+
+        Mesh mesh = assetMeshLibrary.GetMeshByName("bricks");
 
         foreach (var brick in bricks)
         {
             GameObject brickGO = new GameObject("Brick");
-
             brickGO.transform.SetParent(wallGO.transform);
 
             brickGO.AddComponent<MeshFilter>().mesh = mesh;
-            brickGO.AddComponent<MeshRenderer>().material = redMaterial;
+
+            // Choisir un matériau aléatoire depuis la liste
+            Material randomMat = brickMaterials[Random.Range(0, brickMaterials.Count)];
+            brickGO.AddComponent<MeshRenderer>().material = randomMat;
+
             brickGO.AddComponent<BrickInstanceMarker>();
 
             // Appliquer la transformation de la brique
             Matrix4x4 mat = brick.transform.ComputeMatrix();
 
-            brickGO.transform.position = mat.GetColumn(3); // position
-            brickGO.transform.rotation = Quaternion.LookRotation(
-                mat.GetColumn(2), // Z → forward
-                mat.GetColumn(1)  // Y → up
-            );
-
-            brickGO.transform.localScale = new Vector3(
+            Vector3 pos = mat.GetColumn(3);
+            Vector3 forward = mat.GetColumn(2);
+            Vector3 up = mat.GetColumn(1);
+            Vector3 scale = new Vector3(
                 mat.GetColumn(0).magnitude,
-                mat.GetColumn(1).magnitude,
-                mat.GetColumn(2).magnitude
+                up.magnitude,
+                forward.magnitude
             );
 
-            brickGO.transform.localScale = brickGO.transform.localScale * 100f;
-        }
+            brickGO.transform.position = pos;
+            brickGO.transform.rotation = Quaternion.LookRotation(forward, up);
+            brickGO.transform.localScale = scale * 100f;
 
-        return wallGO;
+            brickGO.SetActive(IsWallActivated);
+        }
     }
+
 
     public void ClearBricks(GameObject wallGO)
     {
+        if (wallGO == null)
+        {
+            Debug.LogWarning("ClearBricks called with null wall GameObject.");
+            return;
+        }
+
         var markers = wallGO.GetComponentsInChildren<BrickInstanceMarker>();
+
         foreach (var marker in markers)
         {
             DestroyImmediate(marker.gameObject);
         }
 
-        Debug.Log($"Cleared {markers.Length} brick GameObjects.");
+        //Debug.Log($"Cleared {markers.Length} brick GameObjects.");
     }
+
 
 
 }

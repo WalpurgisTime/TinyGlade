@@ -27,25 +27,33 @@ public class ComputeTexture
         };
         RenderTex.Create();
 
-        // Ajouter le Compute Shader à la bibliothèque
+        // Ajouter le Compute Shader ï¿½ la bibliothï¿½que
         shaderLibrary.AddComputeShader(computeShaderPath, ComputeProgram);
         shaderwatch.OnShaderChanged += (path) =>
         {
             if (path.Contains(computeShaderPath))
             {
-                Debug.Log($"ComputeTexture: Shader {computeShaderPath} mis à jour !");
+                Debug.Log($"ComputeTexture: Shader {computeShaderPath} mis ï¿½ jour !");
                 ComputeProgram = Resources.Load<ComputeShader>(computeShaderPath);
             }
         };
     }
 
-    public void Dispatch()
+    public void Dispatch(string name)
     {
         if (ComputeProgram == null) return;
 
-        int kernelHandle = ComputeProgram.FindKernel("CSMain");
+        int kernelHandle = ComputeProgram.FindKernel(name);
         ComputeProgram.SetTexture(kernelHandle, "Result", RenderTex);
         ComputeProgram.Dispatch(kernelHandle, 512 / 8, 512 / 8, 1);
+    }
+
+    public void Clear()
+    {
+        var tmp = RenderTexture.active;
+        RenderTexture.active = RenderTex;
+        GL.Clear(true, true, Color.clear);
+        RenderTexture.active = tmp;
     }
 }
 

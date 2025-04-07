@@ -60,3 +60,55 @@ void main() {
     // output to a specific pixel in the image
     imageStore(img_output, pixel_coords, pixel);
 }
+
+
+
+
+
+// #pragma kernel CSMain
+
+// RWTexture2D<float4> img_output;
+
+// cbuffer BrushData
+// {
+//     float3 Mouse_Position;
+//     int is_additive;
+//     float2 path_mask_ws_dims;
+// };
+
+// [numthreads(1, 1, 1)]
+// void CSMain(uint3 id : SV_DispatchThreadID)
+// {
+//     float BRUSH_SIZE = is_additive != 0 ? 0.45 : 0.75 * 0.9;
+
+//     int2 pixel_coords = int2(id.xy);
+
+//     int2 dims;
+//     img_output.GetDimensions(dims.x, dims.y);
+
+//     float4 pixel = img_output[pixel_coords];
+
+//     float x = (float(pixel_coords.x * 2 - dims.x) / dims.x);
+//     float y = (float(pixel_coords.y * 2 - dims.y) / dims.y);
+
+//     x *= path_mask_ws_dims.x * 0.5;
+//     y *= path_mask_ws_dims.y * 0.5;
+//     float3 pixel_ws = float3(x, 0.0, y);
+
+//     float d = distance(pixel_ws, Mouse_Position);
+//     d = clamp(d, 0.0, BRUSH_SIZE);
+//     d = (BRUSH_SIZE - d) / BRUSH_SIZE;
+//     d = d > 0.0 ? 1.0 : 0.0;
+
+//     if (is_additive != 0)
+//     {
+//         pixel = max(pixel, float4(d, d, d, 1.0));
+//     }
+//     else
+//     {
+//         float v = max(pixel.x - d, 0.0);
+//         pixel = float4(v, v, v, 1.0);
+//     }
+
+//     img_output[pixel_coords] = pixel;
+// }

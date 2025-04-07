@@ -4,8 +4,8 @@ public class CurveSegmentsComputePass : MonoBehaviour
 {
     public ComputeShader computeTexture; // Shader principal "shaders/arch_curve_segments"
 
-    private ComputeBuffer curvesBuffer;
-    private ComputeBuffer segmentsBuffer;
+    public ComputeBuffer curvesBuffer;
+    public ComputeBuffer segmentsBuffer;
     private ComputeBuffer computeIndirectCmdBuffer;
 
     private const int COMMAND_BUFFER_SIZE = 1000;
@@ -30,14 +30,25 @@ public class CurveSegmentsComputePass : MonoBehaviour
     {
         // Charger le Compute Shader
         ComputeTexture computeTex = ComputeTexture.Init("shaders/arch_curve_segments", shaderwatch, shaderLibrary);
-        computeTexture = computeTex.ComputeProgram; // Récupération du ComputeShader
+        computeTexture = computeTex.ComputeProgram; // Rï¿½cupï¿½ration du ComputeShader
 
-        cmdBufferBindingPoint = 5; // Valeur par défaut (correspond à Bevy)
+        cmdBufferBindingPoint = 5; // Valeur par dï¿½faut (correspond ï¿½ Bevy)
 
         // Initialisation des buffers
+        /*
         curvesBuffer = new ComputeBuffer(CURVE_BUFFER_SIZE, sizeof(float) * 2);
         segmentsBuffer = new ComputeBuffer(COMMAND_BUFFER_SIZE, sizeof(float) * 4);
         computeIndirectCmdBuffer = new ComputeBuffer(1, sizeof(uint) * 3, ComputeBufferType.IndirectArguments);
+        */
+
+        curvesBuffer = new ComputeBuffer(CURVE_BUFFER_SIZE, sizeof(float) * 2);
+        //Debug.Log($"[Init] CURVE_BUFFER_SIZE stride = {sizeof(float) * 2}");
+
+        segmentsBuffer = new ComputeBuffer(COMMAND_BUFFER_SIZE, sizeof(float) * 4);
+        //Debug.Log($"[Init] SEGMENTS stride = {sizeof(float) * 4}");
+
+        computeIndirectCmdBuffer = new ComputeBuffer(1, sizeof(uint) * 3, ComputeBufferType.IndirectArguments);
+        //Debug.Log($"[Init] computeIndirectCmdBuffer stride = {sizeof(uint) * 3}");
 
         // Initialisation des courbes avec des valeurs de test
         Vector2[] curveData = new Vector2[CURVE_BUFFER_SIZE];
@@ -52,14 +63,25 @@ public class CurveSegmentsComputePass : MonoBehaviour
     {
         // Charger le Compute Shader en gardant le nom comme en Rust
         ComputeTexture computeTex = ComputeTexture.Init("shaders/arch_curve_segments", shaderwatch, shaderLibrary);
-        computeTexture = computeTex.ComputeProgram; // Correction : Récupération du ComputeShader
+        computeTexture = computeTex.ComputeProgram; // Correction : Rï¿½cupï¿½ration du ComputeShader
 
         cmdBufferBindingPoint = cmdBufferBinding;
 
         // Initialisation des buffers
+        /*
         curvesBuffer = new ComputeBuffer(CURVE_BUFFER_SIZE, sizeof(float) * 2);
         segmentsBuffer = new ComputeBuffer(COMMAND_BUFFER_SIZE, sizeof(float) * 4);
         computeIndirectCmdBuffer = new ComputeBuffer(1, sizeof(uint) * 3, ComputeBufferType.IndirectArguments);
+        */
+
+        curvesBuffer = new ComputeBuffer(CURVE_BUFFER_SIZE, sizeof(float) * 2);
+        Debug.Log($"[Init] CURVE_BUFFER_SIZE stride = {sizeof(float) * 2}");
+
+        segmentsBuffer = new ComputeBuffer(COMMAND_BUFFER_SIZE, sizeof(float) * 4);
+        Debug.Log($"[Init] SEGMENTS stride = {sizeof(float) * 4}");
+
+        computeIndirectCmdBuffer = new ComputeBuffer(1, sizeof(uint) * 3, ComputeBufferType.IndirectArguments);
+        Debug.Log($"[Init] computeIndirectCmdBuffer stride = {sizeof(uint) * 3}");
 
         // Initialisation des courbes avec des valeurs de test
         Vector2[] curveData = new Vector2[CURVE_BUFFER_SIZE];
@@ -70,10 +92,39 @@ public class CurveSegmentsComputePass : MonoBehaviour
         curvesBuffer.SetData(curveData);
     }
 
+    public void Bind(ShaderLibrary assetsShader, RenderTexture pathMask, Vector2 pathMaskWsDims)
+    {
+        // 1. RÃ©cupÃ©rer le ComputeShader depuis la ShaderLibrary
+        ComputeShader shader = assetsShader.GetComputeShaderByName("shaders/arch_curve_segments");
+        if (shader == null)
+        {
+            Debug.LogError("Shader introuvable dans ShaderLibrary !");
+            return;
+        }
+
+        int kernel = shader.FindKernel("CSMain");
+
+        // 2. Lier le buffer de commande indirecte
+        shader.SetBuffer(kernel, "CommandBuffer", computeIndirectCmdBuffer);
+
+        // 3. Lier les uniforms de position/dimension
+        shader.SetVector("path_mask_ws_dims", pathMaskWsDims);
+
+        // 4. Lier directement la RenderTexture comme image
+        shader.SetTexture(kernel, "PathMaskTexture", pathMask);
+
+        // 5. Lier les buffers nÃ©cessaires
+        shader.SetBuffer(kernel, "CurvesBuffer", curvesBuffer);
+        shader.SetBuffer(kernel, "SegmentsBuffer", segmentsBuffer);
+
+        // 6. Dispatch du compute shader
+        shader.Dispatch(kernel, 1, 1, 1);
+    }
+
     public void Bind(ShaderLibrary assetsShader, uint pathMask, Vector2 pathMaskWsDims, uint pathMaskImgUnit)
     {
-        // 1?? Récupérer le ComputeShader depuis la ShaderLibrary
-        ComputeShader shader = assetsShader.GetComputeShaderByName("shaders/compute_shader_name"); 
+        // 1?? Rï¿½cupï¿½rer le ComputeShader depuis la ShaderLibrary
+        ComputeShader shader = assetsShader.GetComputeShaderByName("shaders/arch_curve_segments"); 
         if (shader == null)
         {
             Debug.LogError("Shader introuvable dans ShaderLibrary !");
@@ -89,22 +140,26 @@ public class CurveSegmentsComputePass : MonoBehaviour
         shader.SetInt("path_mask", (int)pathMaskImgUnit);
         shader.SetVector("path_mask_ws_dims", pathMaskWsDims);
 
-        // 4?? Lier la texture (équivalent de `gl::BindImageTexture`)
+        // 4?? Lier la texture (ï¿½quivalent de `gl::BindImageTexture`)
        // shader.SetTexture(kernel, "PathMaskTexture", assetsShader.GetRenderTextureFromID(pathMask));
 
         // 5?? Lier les buffers
         shader.SetBuffer(kernel, "CurvesBuffer", curvesBuffer);
         shader.SetBuffer(kernel, "SegmentsBuffer", segmentsBuffer);
 
-        // 6?? Exécuter le Compute Shader
+        // 6?? Exï¿½cuter le Compute Shader
         shader.Dispatch(kernel, 1, 1, 1);
     }
+
+    
+
+
 
 
 
     public void ResetCmdBuffer()
     {
-        // Réinitialiser le buffer de commande
+        // Rï¿½initialiser le buffer de commande
         DispatchIndirectCommand[] commandData = new DispatchIndirectCommand[1];
         commandData[0] = new DispatchIndirectCommand { numGroupsX = 0, numGroupsY = 1, numGroupsZ = 1 };
         computeIndirectCmdBuffer.SetData(commandData);
@@ -112,7 +167,7 @@ public class CurveSegmentsComputePass : MonoBehaviour
 
     public void ResetSegmentsBuffer()
     {
-        // Réinitialiser le buffer de segments
+        // Rï¿½initialiser le buffer de segments
         ArchSegmentDataSSBO[] emptyData = new ArchSegmentDataSSBO[COMMAND_BUFFER_SIZE];
         for (int i = 0; i < COMMAND_BUFFER_SIZE; i++)
         {
@@ -124,7 +179,7 @@ public class CurveSegmentsComputePass : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Libérer la mémoire GPU
+        // Libï¿½rer la mï¿½moire GPU
         curvesBuffer.Release();
         segmentsBuffer.Release();
         computeIndirectCmdBuffer.Release();

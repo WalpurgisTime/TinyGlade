@@ -29,11 +29,6 @@ public class DrawWallSystem : MonoBehaviour
         leftClickAction.Disable();
     }
 
-    void Start()
-    {
-        wallManager = wallManagerDebugger.wallManager;
-    }
-
     void Update()
     {
         if (CurrentMode != BrushMode.Wall) return;
@@ -52,21 +47,20 @@ public class DrawWallSystem : MonoBehaviour
                 activeCurveIndex = result.index;
                 var tempCurve = result.curve;
                 drawMode = result.mode;
-
-                wallManager.tempCurve = new InProgressCurve(tempCurve, activeCurveIndex, drawMode);
+                wallManagerDebugger.wallManager.tempCurve = new InProgressCurve(tempCurve, activeCurveIndex, drawMode);
             }
             else
             {
-                activeCurveIndex = wallManager.NewWall(new Curve());
-                wallManager.tempCurve = new InProgressCurve(new Curve(), activeCurveIndex, AddPointsTo.End);
+                activeCurveIndex = wallManagerDebugger.wallManager.NewWall(new Curve());
+                wallManagerDebugger.wallManager.tempCurve = new InProgressCurve(new Curve(), activeCurveIndex, AddPointsTo.End);
                 drawMode = AddPointsTo.End;
             }
 
             GameEvents.OnCurveChanged.Invoke(activeCurveIndex);
         }
-        else if (leftClickAction.IsPressed() && isDrawing && wallManager.tempCurve != null)
+        else if (leftClickAction.IsPressed() && isDrawing && wallManagerDebugger.wallManager.tempCurve != null)
         {
-            var temp = wallManager.tempCurve;
+            var temp = wallManagerDebugger.wallManager.tempCurve;
             var active_curve = temp.curve;
 
             int ptIndex = drawMode == AddPointsTo.End ? active_curve.points.Count - 1 : 0;
@@ -87,7 +81,16 @@ public class DrawWallSystem : MonoBehaviour
                     Curve clone_temp_curve = new Curve(active_curve.points);
                     clone_temp_curve.Smooth(4);
                     clone_temp_curve.Resample(0.05f);
-                    wallManager.GetWall(temp.index).curve = clone_temp_curve;
+                    Wall wall = wallManagerDebugger.wallManager.GetWall(temp.index);
+                    if (wall != null)
+                    {
+                        wall.curve = clone_temp_curve;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[DrawWall] Can't set curve: Wall at index {temp.index} not found.");
+                    }
+
                 }
 
                 GameEvents.OnCurveChanged.Invoke(temp.index);
@@ -97,10 +100,10 @@ public class DrawWallSystem : MonoBehaviour
 
     private (int index, Curve curve, AddPointsTo mode)? FindNearbyCurve(Vector3 pos)
     {
-        if (wallManager == null || wallManager.walls == null)
+        if (wallManagerDebugger.wallManager == null || wallManagerDebugger.wallManager.walls == null)
             return null;
 
-        foreach (var pair in wallManager.walls)
+        foreach (var pair in wallManagerDebugger.wallManager.walls)
         {
             int idx = pair.Key;
             Curve curve = pair.Value.curve;

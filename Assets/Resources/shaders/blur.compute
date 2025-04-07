@@ -1,4 +1,4 @@
-#pragma kernel CSMain
+#pragma kernel CSMai
 
 RWTexture2D<float4> img_in;
 RWTexture2D<float4> img_out;
@@ -25,14 +25,13 @@ float NormPdf(float x, float sigma)
 }
 
 [numthreads(1, 1, 1)]
-void CSMain(uint3 id : SV_DispatchThreadID)
+void CSMai(uint3 id : SV_DispatchThreadID)
 {
     int2 pixel_coords = int2(id.xy);
     int2 dims = GetTextureSize(img_in);
 
     float4 sum = float4(0.0, 0.0, 0.0, 1.0);
 
-    // Paramètres du flou gaussien
     float Pi = 6.28318530718;
     float Directions = 30.0;
     float Quality = 10.0;
@@ -43,7 +42,6 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 
     float4 Color = img_in[pixel_coords];
 
-    // Application du flou gaussien
     for (float d = 0.0; d < Pi; d += Pi / Directions)
     {
         for (float i = 1.0 / Quality; i <= 1.0; i += 1.0 / Quality)
@@ -55,7 +53,5 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     }
 
     Color /= Quality * Directions - 15.0;
-
-    // Sortie du pixel transformé
     img_out[pixel_coords] = float4(Color.rgb, 1.0);
 }

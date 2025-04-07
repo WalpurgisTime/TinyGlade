@@ -1,4 +1,4 @@
-
+﻿
 /*using System;
 using System.Collections.Generic;
 
@@ -75,10 +75,10 @@ using UnityEngine;
 
 public class MeshLibrary : MonoBehaviour
 {
-    [SerializeField]
+
     private Dictionary<int, Mesh> meshLibrary = new Dictionary<int, Mesh>();
     private Dictionary<string, int> byName = new Dictionary<string, int>();
-    private List<int> markedAsDirty = new List<int>();
+    public List<Mesh> markedAsDirty = new List<Mesh>();
 
     private int handleCounter = 0;
 
@@ -97,26 +97,46 @@ public class MeshLibrary : MonoBehaviour
         Debug.LogWarning($"Mesh avec Handle {handle} introuvable !");
         return null;
     }
+    public Mesh GetMesh(Mesh mesh)
+    {
+        foreach (var pair in meshLibrary)
+        {
+            if (pair.Value == mesh)
+                return pair.Value;
+        }
+
+        Debug.LogWarning("Mesh non trouvé dans la MeshLibrary.");
+        return null;
+    }
+
+
 
     public Mesh GetMeshByName(string name)
     {
+        if (string.IsNullOrEmpty(name))
+        {
+            Debug.LogWarning("⚠️ GetMeshByName: nom de mesh nul !");
+            return null;
+        }
+
         if (byName.TryGetValue(name, out int handle))
             return GetMesh(handle);
         Debug.LogWarning($"Mesh '{name}' introuvable !");
         return null;
     }
 
-    public bool IsDirty(int handle)
+
+    public bool IsDirty(Mesh mesh)
     {
-        return markedAsDirty.Contains(handle);
+        return mesh != null && markedAsDirty.Contains(mesh);
     }
 
-    public void MarkDirty(int handle)
+    // Marque un Mesh comme dirty (à reconstruire)
+    public void MarkDirty(Mesh mesh)
     {
-        if (!markedAsDirty.Contains(handle))
-            markedAsDirty.Add(handle);
+        if (mesh != null)
+            markedAsDirty.Add(mesh);
     }
-
     public void RemoveMesh(int handle)
     {
         meshLibrary.Remove(handle);
