@@ -1,6 +1,6 @@
 Shader "Custom/Paths"
 {
-        Properties
+    Properties
     {
         _TerrainTex ("Terrain Texture", 2D) = "white" {}
         _PathTex ("Path Texture", 2D) = "white" {}
@@ -14,15 +14,11 @@ Shader "Custom/Paths"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
+            #pragma target 4.5
             #include "UnityCG.cginc"
 
             sampler2D _TerrainTex;
             sampler2D _PathTex;
-
-            float4x4 UNITY_MATRIX_M;
-            float4x4 UNITY_MATRIX_V;
-            float4x4 UNITY_MATRIX_P;
 
             struct appdata
             {
@@ -42,13 +38,18 @@ Shader "Custom/Paths"
             float SampleTerrainTextureWS(float2 pos_ws)
             {
                 float2 uv = (pos_ws / 20.0 + 0.5);
-                return tex2D(_TerrainTex, uv).r;
+                //return tex2D(_TerrainTex, uv).r;
+                return tex2Dlod(_TerrainTex, float4(uv, 0, 0)).r;
+
             }
 
             float SamplePathTextureWS(float2 pos_ws)
             {
                 float2 uv = (pos_ws / 20.0 + 0.5);
-                return tex2D(_PathTex, uv).r;
+                //return tex2D(_PathTex, uv).r;
+
+                return tex2Dlod(_PathTex, float4(uv, 0, 0)).r;
+
             }
 
             float RandomF(float x)
@@ -65,7 +66,7 @@ Shader "Custom/Paths"
             {
                 v2f o;
 
-                float3 pos_ws = mul(UNITY_MATRIX_M, v.vertex).xyz;
+                float3 pos_ws = mul(unity_ObjectToWorld, v.vertex).xyz;
                 float2 bbx_min = v.bbx_bounds.xy;
                 float2 bbx_max = v.bbx_bounds.zw;
 
@@ -96,7 +97,8 @@ Shader "Custom/Paths"
                 h = Fit01(h * h * sign(h), 0.1, 3.0);
                 h = clamp(h, 0.1, 0.8);
 
-                o.pos = mul(UNITY_MATRIX_P, mul(UNITY_MATRIX_V, float4(pos_ws, 1.0)));
+                float4 pos_clip = UnityObjectToClipPos(float4(pos_ws, 1.0));
+                o.pos = pos_clip;
                 o.color = float3(random_color, random_color, random_color) * Fit01(h, 0.0, 2.0);
                 o.color.b *= (1.0 - h);
                 o.uv = v.uv;
@@ -107,7 +109,6 @@ Shader "Custom/Paths"
             {
                 return fixed4(i.color, 1.0);
             }
-
             ENDCG
         }
     }

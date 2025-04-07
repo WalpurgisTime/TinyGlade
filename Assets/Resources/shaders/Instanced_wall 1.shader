@@ -143,7 +143,13 @@ Shader "Custom/InstancedWall"
                         clip(-1.0);
                     }
                 }
+
+                float3 baseColor = float3(0.8, 0.7, 0.6); 
+                float3 finalColor = baseColor ;
+
+                return fixed4(finalColor, 1.0);
             }
+            ENDCG
         }
     }
 }        

@@ -22,6 +22,7 @@ Shader "Unlit/Instanced_wall"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma target 4.5
             #include "UnityCG.cginc"
            
 
@@ -64,7 +65,8 @@ Shader "Unlit/Instanced_wall"
             float sample_terrain_texture_ws(float2 pos_ws)
             {
                 float2 texture_uv = (pos_ws / 20.0 + 0.5);
-                return tex2D(_TerrainTex, texture_uv).r;
+                //return tex2D(_TerrainTex, texture_uv).r;
+                return tex2Dlod(_TerrainTex, float4(texture_uv, 0, 0)).r;
             }
 
             float randomf(float x)
@@ -339,3 +341,4 @@ Shader "Unlit/Instanced_wall"
     }
     FallBack "Diffuse"
 }
+
