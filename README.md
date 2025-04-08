@@ -47,10 +47,8 @@ Ce projet m’a aidé à comprendre comment ce type de rendu procédural et viva
 Ce prototype n’est **pas un jeu complet**, mais une **étude de style** inspirée de *Tiny Glade*.  
 Il m’a servi de laboratoire personnel pour mieux comprendre :
 
-- Comment les formes peuvent s’adapter dynamiquement au terrain  
-- Comment créer une ambiance douce et ludique avec très peu d’UI  
-- Comment Unity peut être utilisé en "low tech" pour faire des expériences poétiques
-
+- Comment les formes peuvent s’adapter dynamiquement au terrain
+- Comment fonctionne les ecs et les buffer dans des jeux 
 
 ## 📚 Références
 
