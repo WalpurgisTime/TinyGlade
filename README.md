@@ -6,6 +6,17 @@
 
 ---
 
+## 📸 Aperçu
+
+<p align="center">
+  <a href="https://youtu.be/Rip7A67SPFg?si=-oppw2lQDF-C7ekl">
+    <img src="https://img.youtube.com/vi/Rip7A67SPFg/0.jpg" alt="Tiny Glade Preview">
+  </a>
+</p>
+
+> 🎥 *Prototype en action – rendu procédural des murs et terrain interactif (cliquez pour voir sur YouTube)*
+
+---
 ## 🎯 Objectif du projet
 
 Ce projet m’a permis d’explorer en profondeur :
