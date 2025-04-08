@@ -48,7 +48,7 @@ Ce prototype n’est **pas un jeu complet**, mais une **étude de style** inspir
 Il m’a servi de laboratoire personnel pour mieux comprendre :
 
 - Comment les formes peuvent s’adapter dynamiquement au terrain
-- Comment fonctionne les ecs et les buffer dans des jeux 
+- Comment fonctionne les ecs et les buffers dans des jeux 
 
 ## 📚 Références
 
