@@ -1,5 +1,5 @@
 # 🌿 Tiny Glade – Unity Fan Version  
-![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+
 
 > Adaptation personnelle des prototypes de **Tiny Glade** ([Anastasia Opara](https://anastasiaopara.com)), réalisée avec Unity.  
 > Une tentative de recréer les sensations douces et organiques du jeu, avec uniquement les outils natifs du moteur Unity.
@@ -20,7 +20,7 @@ Ce projet m’a permis d’explorer en profondeur :
 - [Unity](https://unity.com/) (2022.x ou 2023.x)
 - [C#](https://learn.microsoft.com/fr-fr/dotnet/csharp/)
 - [Shader Graph](https://unity.com/shader-graph) / HLSL
-- [ComputeBuffer](https://docs.unity3d.com/ScriptReference/ComputeBuffer.html), [MaterialPropertyBlock](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html)
+- [ComputeBuffer](https://docs.unity3d.com/ScriptReference/ComputeBuffer.html)
 - Pas d’OpenGL natif, pas d’ECS externe : tout est fait avec les outils Unity standards
 
 ---
