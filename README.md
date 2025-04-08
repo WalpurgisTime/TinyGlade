@@ -30,3 +30,28 @@ Ce projet m’a permis d’explorer en profondeur :
 1. Cloner ce dépôt :
    ```bash
    git clone https://github.com/WalpurgisTime/TinyGlade.git
+
+   ## 🧩 Source d'inspiration directe
+
+Ce prototype est librement inspiré du travail d’Anastasia Opara :
+
+- 🗂️ Repo original : [github.com/anopara/country-slice](https://github.com/anopara/country-slice)  
+- 🐦 Tweet prototype : [x.com/anastasiaopara/status/1454793167530778628](https://x.com/anastasiaopara/status/1454793167530778628)
+
+Ce projet m’a aidé à comprendre comment ce type de rendu procédural et vivant pouvait être approché dans Unity.
+
+---
+
+## 🎨 À propos
+
+Ce prototype n’est **pas un jeu complet**, mais une **étude de style** inspirée de *Tiny Glade*.  
+Il m’a servi de laboratoire personnel pour mieux comprendre :
+
+- Comment les formes peuvent s’adapter dynamiquement au terrain  
+- Comment créer une ambiance douce et ludique avec très peu d’UI  
+- Comment Unity peut être utilisé en "low tech" pour faire des expériences poétiques
+
+
+## 📚 Références
+
+- 🎮  🎮 [Tiny Glade (Steam)](https://store.steampowered.com/app/2451780/Tiny_Glade/)
