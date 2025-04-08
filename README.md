@@ -52,4 +52,4 @@ Il m’a servi de laboratoire personnel pour mieux comprendre :
 
 ## 📚 Références
 
-- 🎮  🎮 [Tiny Glade (Steam)](https://store.steampowered.com/app/2451780/Tiny_Glade/)
+- 🎮  [Tiny Glade (Steam)](https://store.steampowered.com/app/2451780/Tiny_Glade/)
